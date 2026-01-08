@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:src/core/common/layouts/admin_shell_layout.dart';
 import 'package:src/core/common/layouts/user_shell_layout.dart';
+import 'package:src/features/authentication/presentation/pages/sign_in_page.dart';
 
 // GoRouter Navigator Keys
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -17,11 +18,11 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       name: 'signIn',
       path: '/sign-in',
-      builder: (context, state) => const Placeholder(),
+      builder: (context, state) => const SignInPage(),
     ),
     GoRoute(
-      name: 'register',
-      path: '/register',
+      name: 'signUp',
+      path: '/sign-up',
       builder: (context, state) => const Placeholder(),
     ),
     GoRoute(

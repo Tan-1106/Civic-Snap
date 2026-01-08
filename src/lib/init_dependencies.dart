@@ -1,0 +1,26 @@
+import 'package:get_it/get_it.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:src/core/network/connection_checker.dart';
+import 'package:src/core/services/secure_storage_service.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
+import 'package:src/features/authentication/data/datasources/auth_remote_data_source.dart';
+import 'package:src/features/authentication/data/datasources/auth_local_data_source.dart';
+import 'package:src/features/authentication/data/repositories/auth_repository_impl.dart';
+import 'package:src/features/authentication/domain/repositories/auth_repository.dart';
+import 'package:src/features/authentication/domain/usecases/sign_up_with_email.dart';
+import 'package:src/features/authentication/domain/usecases/sign_in_with_email.dart';
+import 'package:src/features/authentication/domain/usecases/forgot_password.dart';
+import 'package:src/features/authentication/domain/usecases/save_credentials.dart';
+import 'package:src/features/authentication/domain/usecases/get_saved_credentials.dart';
+import 'package:src/features/authentication/domain/usecases/clear_credentials.dart';
+import 'package:src/features/authentication/presentation/provider/authentication_provider.dart';
+
+part 'init_dependencies.main.dart';

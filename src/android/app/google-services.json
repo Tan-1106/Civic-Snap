@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "70815717992",
+    "project_id": "civic-snap-5a0ba",
+    "storage_bucket": "civic-snap-5a0ba.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70815717992:android:e495dd8f9a1394b845f9dd",
+        "android_client_info": {
+          "package_name": "com.example.src"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4UEwmTwXSoWvsn2UvI7u3RSy5Qn75znE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

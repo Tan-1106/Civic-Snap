@@ -3,7 +3,7 @@ import 'package:src/core/error/failure.dart';
 import 'package:src/core/utils/usecase.dart';
 import 'package:src/features/authentication/domain/repositories/auth_repository.dart';
 
-class ClearCredentialsUseCase implements Usecase<void, NoParams> {
+class ClearCredentialsUseCase implements UseCase<void, NoParams> {
   final AuthRepository repository;
 
   ClearCredentialsUseCase(this.repository);

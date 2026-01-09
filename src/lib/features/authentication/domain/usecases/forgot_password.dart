@@ -3,7 +3,7 @@ import 'package:src/core/error/failure.dart';
 import 'package:src/core/utils/usecase.dart';
 import 'package:src/features/authentication/domain/repositories/auth_repository.dart';
 
-class ForgotPasswordUseCase implements Usecase<void, ForgotPasswordParams> {
+class ForgotPasswordUseCase implements UseCase<void, ForgotPasswordParams> {
   final AuthRepository repository;
 
   ForgotPasswordUseCase(this.repository);

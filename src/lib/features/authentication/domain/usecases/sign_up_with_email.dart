@@ -4,7 +4,7 @@ import 'package:src/core/utils/usecase.dart';
 import 'package:src/features/authentication/domain/entities/user_entity.dart';
 import 'package:src/features/authentication/domain/repositories/auth_repository.dart';
 
-class SignUpWithEmailUseCase implements Usecase<UserEntity, SignUpWithEmailParams> {
+class SignUpWithEmailUseCase implements UseCase<UserEntity, SignUpWithEmailParams> {
   final AuthRepository repository;
 
   SignUpWithEmailUseCase(this.repository);

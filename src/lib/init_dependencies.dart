@@ -22,6 +22,6 @@ import 'package:src/features/authentication/domain/usecases/save_credentials.dar
 import 'package:src/features/authentication/domain/usecases/get_saved_credentials.dart';
 import 'package:src/features/authentication/domain/usecases/clear_credentials.dart';
 import 'package:src/features/authentication/domain/usecases/get_route_for_role.dart';
-import 'package:src/features/authentication/presentation/provider/authentication_provider.dart';
+import 'package:src/features/authentication/presentation/providers/authentication_provider.dart';
 
 part 'init_dependencies.main.dart';

@@ -3,7 +3,7 @@ import 'package:src/core/error/failure.dart';
 import 'package:src/core/utils/usecase.dart';
 import 'package:src/features/authentication/domain/repositories/auth_repository.dart';
 
-class SaveCredentialsUseCase implements Usecase<void, SaveCredentialsParams> {
+class SaveCredentialsUseCase implements UseCase<void, SaveCredentialsParams> {
   final AuthRepository repository;
 
   SaveCredentialsUseCase(this.repository);

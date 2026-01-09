@@ -4,7 +4,7 @@ import 'package:src/core/error/failure.dart';
 import 'package:src/core/utils/usecase.dart';
 import 'package:src/features/authentication/domain/entities/user_entity.dart';
 
-class GetRouteForRoleUseCase implements Usecase<String, GetRouteForRoleParams> {
+class GetRouteForRoleUseCase implements UseCase<String, GetRouteForRoleParams> {
   @override
   Future<Either<Failure, String>> call(GetRouteForRoleParams params) async {
     try {

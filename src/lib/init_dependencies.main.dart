@@ -5,7 +5,8 @@ final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
   await _initCore();
-  _initAuth();
+  _initAuthentication();
+  _initReport();
 }
 
 // Initialize Core Module
@@ -39,26 +40,26 @@ Future<void> _initCore() async {
 }
 
 // Initialize Authentication Module
-void _initAuth() {
+void _initAuthentication() {
   // Data Sources
   serviceLocator.registerFactory<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(
-      serviceLocator<FirebaseAuth>(),
-      serviceLocator<FirebaseFirestore>(),
+      serviceLocator(),
+      serviceLocator(),
     ),
   );
 
   serviceLocator.registerFactory<AuthLocalDataSource>(
     () => AuthLocalDataSourceImpl(
-      serviceLocator<SecureStorageService>(),
+      serviceLocator(),
     ),
   );
 
-  // Repository
+  // Repositories
   serviceLocator.registerFactory<AuthRepository>(
     () => AuthRepositoryImpl(
-      serviceLocator<AuthRemoteDataSource>(),
-      serviceLocator<AuthLocalDataSource>(),
+      serviceLocator(),
+      serviceLocator(),
     ),
   );
 
@@ -103,7 +104,7 @@ void _initAuth() {
     () => GetRouteForRoleUseCase(),
   );
 
-  // Provider
+  // Providers
   serviceLocator.registerLazySingleton(
     () => AuthenticationProvider(
       serviceLocator(),
@@ -111,6 +112,44 @@ void _initAuth() {
       serviceLocator(),
       serviceLocator(),
       serviceLocator(),
+      serviceLocator(),
+      serviceLocator(),
+    ),
+  );
+}
+
+void _initReport() {
+  // Data Sources
+  serviceLocator.registerFactory<ReportRemoteDataSource>(
+    () => ReportRemoteDataSourceImpl(
+      serviceLocator(),
+      serviceLocator(),
+    ),
+  );
+
+  // Repositories
+  serviceLocator.registerFactory<ReportRepository>(
+    () => ReportRepositoryImpl(
+      serviceLocator(),
+    ),
+  );
+
+  // Use Cases
+  serviceLocator.registerFactory(
+    () => UploadImageUseCase(
+      serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+    () => SubmitReportUseCase(
+      serviceLocator(),
+    ),
+  );
+
+  // Providers
+  serviceLocator.registerLazySingleton(
+    () => ReportProvider(
       serviceLocator(),
       serviceLocator(),
     ),

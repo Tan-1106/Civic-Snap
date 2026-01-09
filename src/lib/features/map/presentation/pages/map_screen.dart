@@ -78,6 +78,10 @@ class _MapScreenState extends State<MapScreen> {
         myLocationButtonEnabled: true,
         zoomControlsEnabled: false,
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _determineUserPosition,
+        child: const Icon(Icons.my_location),
+      ),
     );
   }
 }

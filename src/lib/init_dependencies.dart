@@ -4,6 +4,12 @@ import 'package:src/core/network/connection_checker.dart';
 import 'package:src/core/services/secure_storage_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:src/features/report/data/datasources/report_remote_data_source.dart';
+import 'package:src/features/report/data/repositories/report_repository_impl.dart';
+import 'package:src/features/report/domain/repositories/report_repository.dart';
+import 'package:src/features/report/domain/usecases/submit_report.dart';
+import 'package:src/features/report/domain/usecases/upload_image.dart';
+import 'package:src/features/report/presentation/providers/report_provider.dart';
 
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';

@@ -5,7 +5,9 @@ import 'package:src/core/common/layouts/user_shell_layout.dart';
 import 'package:src/features/authentication/presentation/pages/forgot_password_page.dart';
 import 'package:src/features/authentication/presentation/pages/sign_in_page.dart';
 import 'package:src/features/authentication/presentation/pages/sign_up_page.dart';
+import 'package:src/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:src/features/map/presentation/pages/map_screen.dart';
+import 'package:src/features/report/presentation/pages/send_report_page.dart';
 
 // GoRouter Navigator Keys
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -44,7 +46,7 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           name: 'adminDashboard',
           path: '/admin-dashboard',
-          builder: (context, state) => const Scaffold(body: Center(child: Text('Admin Dashboard'))),
+          builder: (context, state) => const DashboardPage(),
         ),
         GoRoute(
           name: 'adminMap',
@@ -74,7 +76,7 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           name: 'userReport',
           path: '/user-report',
-          builder: (context, state) => const Scaffold(body: Center(child: Text('User Report'))),
+          builder: (context, state) => const SendReportPage(),
         ),
         GoRoute(
           name: 'userProfile',

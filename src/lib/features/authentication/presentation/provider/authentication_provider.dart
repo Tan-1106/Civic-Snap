@@ -7,6 +7,7 @@ import 'package:src/features/authentication/domain/usecases/sign_up_with_email.d
 import 'package:src/features/authentication/domain/usecases/save_credentials.dart';
 import 'package:src/features/authentication/domain/usecases/get_saved_credentials.dart';
 import 'package:src/features/authentication/domain/usecases/clear_credentials.dart';
+import 'package:src/features/authentication/domain/usecases/get_route_for_role.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   final SignUpWithEmailUseCase _signUpWithEmailUseCase;
@@ -15,6 +16,7 @@ class AuthenticationProvider extends ChangeNotifier {
   final SaveCredentialsUseCase _saveCredentialsUseCase;
   final GetSavedCredentialsUseCase _getSavedCredentialsUseCase;
   final ClearCredentialsUseCase _clearCredentialsUseCase;
+  final GetRouteForRoleUseCase _getRouteForRoleUseCase;
 
   AuthenticationProvider(
     SignUpWithEmailUseCase signUpWithEmailUseCase,
@@ -23,12 +25,14 @@ class AuthenticationProvider extends ChangeNotifier {
     SaveCredentialsUseCase saveCredentialsUseCase,
     GetSavedCredentialsUseCase getSavedCredentialsUseCase,
     ClearCredentialsUseCase clearCredentialsUseCase,
+    GetRouteForRoleUseCase getRouteForRoleUseCase,
   ) : _signUpWithEmailUseCase = signUpWithEmailUseCase,
       _signInWithEmailUseCase = signInWithEmailUseCase,
       _forgotPasswordUseCase = forgotPasswordUseCase,
       _saveCredentialsUseCase = saveCredentialsUseCase,
       _getSavedCredentialsUseCase = getSavedCredentialsUseCase,
-      _clearCredentialsUseCase = clearCredentialsUseCase;
+      _clearCredentialsUseCase = clearCredentialsUseCase,
+      _getRouteForRoleUseCase = getRouteForRoleUseCase;
 
   UserEntity? _user;
 
@@ -41,6 +45,10 @@ class AuthenticationProvider extends ChangeNotifier {
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
+
+  String? _redirectRoute;
+
+  String? get redirectRoute => _redirectRoute;
 
   Map<String, String?>? _savedCredentials;
 
@@ -186,6 +194,38 @@ class AuthenticationProvider extends ChangeNotifier {
       },
     );
 
+    notifyListeners();
+  }
+
+  Future<String?> getRouteForRole() async {
+    if (_user == null) {
+      _errorMessage = 'User not authenticated';
+      return null;
+    }
+
+    final result = await _getRouteForRoleUseCase(
+      GetRouteForRoleParams(user: _user!),
+    );
+
+    return result.fold(
+      (failure) {
+        _errorMessage = failure.message;
+        return null;
+      },
+      (route) {
+        _redirectRoute = route;
+        notifyListeners();
+        return route;
+      },
+    );
+  }
+
+  void clearRedirectRoute() {
+    _redirectRoute = null;
+  }
+
+  void clearError() {
+    _errorMessage = null;
     notifyListeners();
   }
 }

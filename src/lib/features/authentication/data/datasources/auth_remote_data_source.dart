@@ -42,6 +42,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         id: response.user!.uid,
         name: name,
         email: email,
+        role: 'User',
         profileImageUrl: null,
       );
       await firestore.collection('users').doc(user.id).set(user.toMap());

@@ -5,76 +5,44 @@ import 'package:src/core/common/widgets/primary_button.dart';
 import 'package:src/core/utils/show_snackbar.dart';
 import 'package:src/features/authentication/presentation/provider/authentication_provider.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
-  bool _hidePassword = true;
-  bool _rememberMe = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadSavedCredentials();
-  }
-
-  Future<void> _loadSavedCredentials() async {
-    final provider = context.read<AuthenticationProvider>();
-    await provider.loadSavedCredentials();
-
-    final credentials = provider.savedCredentials;
-    if (credentials != null) {
-      final email = credentials['email'];
-      final password = credentials['password'];
-
-      if (email != null && password != null) {
-        setState(() {
-          _emailController.text = email;
-          _passwordController.text = password;
-          _rememberMe = true;
-        });
-      }
-    }
-  }
-
-  void _submit() async {
+  void _submit() {
     if (_formKey.currentState?.validate() ?? false) {
+      final name = _nameController.text;
       final email = _emailController.text;
       final password = _passwordController.text;
 
-      final provider = context.read<AuthenticationProvider>();
-      await provider.signInWithEmail(
+      context.read<AuthenticationProvider>().signUpWithEmail(
+        name: name,
         email: email,
         password: password,
-        rememberMe: _rememberMe,
       );
       FocusManager.instance.primaryFocus?.unfocus();
 
-      if (provider.user != null && provider.errorMessage == null) {
-        final route = await provider.getRouteForRole();
-        if (route != null && mounted) {
-          context.go(route);
-          provider.clearRedirectRoute();
-        }
-      } else if (provider.errorMessage != null && mounted) {
-        showErrorSnackBar(context, provider.errorMessage!);
-        provider.clearError();
-      }
+      showSuccessSnackBar(context, 'Registration successful! Please check your email to verify your account.');
+      context.pop();
     }
   }
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -98,7 +66,7 @@ class _SignInPageState extends State<SignInPage> {
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 Text(
-                  'Snap to Fix, Act to Build.',
+                  'Sign Up for an Account',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(
@@ -107,13 +75,32 @@ class _SignInPageState extends State<SignInPage> {
                 SizedBox(
                   width: 300,
                   child: TextFormField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Name',
+                      hintText: 'Enter your full name',
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.person),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your name';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: 300,
+                  child: TextFormField(
                     controller: _emailController,
                     decoration: const InputDecoration(
                       labelText: 'Email',
-                      hintText: 'Enter your email',
+                      hintText: 'Enter your email address',
                       border: OutlineInputBorder(),
                       prefixIcon: Icon(Icons.email),
                     ),
+                    keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
@@ -129,26 +116,19 @@ class _SignInPageState extends State<SignInPage> {
                   width: 300,
                   child: TextFormField(
                     controller: _passwordController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Password',
                       hintText: 'Enter your password',
-                      border: const OutlineInputBorder(),
-                      prefixIcon: const Icon(Icons.lock),
-                      suffixIcon: InkWell(
-                        onTap: () {
-                          setState(() {
-                            _hidePassword = !_hidePassword;
-                          });
-                        },
-                        child: Icon(
-                          _hidePassword ? Icons.visibility_off : Icons.visibility,
-                        ),
-                      ),
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.lock),
                     ),
-                    obscureText: _hidePassword,
+                    obscureText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your password';
+                      }
+                      if (value.length < 6) {
+                        return 'Password must be at least 6 characters long';
                       }
                       return null;
                     },
@@ -156,41 +136,28 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 SizedBox(
                   width: 300,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: _rememberMe,
-                            visualDensity: VisualDensity.compact,
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            onChanged: (value) {
-                              setState(() {
-                                _rememberMe = value ?? false;
-                              });
-                            },
-                          ),
-                          const Text('Remember Me'),
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          context.push('/forgot-password');
-                        },
-                        child: Text(
-                          'Forgot Password?',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
+                  child: TextFormField(
+                    controller: _confirmPasswordController,
+                    decoration: const InputDecoration(
+                      labelText: 'Confirm Password',
+                      hintText: 'Re-enter your password',
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.lock),
+                    ),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please confirm your password';
+                      }
+                      if (value != _passwordController.text) {
+                        return 'Passwords do not match';
+                      }
+                      return null;
+                    },
                   ),
                 ),
                 PrimaryButton(
-                  text: 'Sign In',
+                  text: 'Sign Up',
                   width: 300,
                   onPressed: _submit,
                 ),
@@ -200,13 +167,13 @@ class _SignInPageState extends State<SignInPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Don't have an account? "),
+                    const Text("Already have an account? "),
                     GestureDetector(
                       onTap: () {
-                        context.push('/sign-up');
+                        context.pop();
                       },
                       child: Text(
-                        'Sign Up',
+                        'Sign In',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.bold,

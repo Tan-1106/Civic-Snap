@@ -99,9 +99,14 @@ void _initAuth() {
     ),
   );
 
+  serviceLocator.registerFactory(
+    () => GetRouteForRoleUseCase(),
+  );
+
   // Provider
   serviceLocator.registerLazySingleton(
     () => AuthenticationProvider(
+      serviceLocator(),
       serviceLocator(),
       serviceLocator(),
       serviceLocator(),

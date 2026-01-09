@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:src/core/common/layouts/admin_shell_layout.dart';
 import 'package:src/core/common/layouts/user_shell_layout.dart';
+import 'package:src/features/authentication/presentation/pages/forgot_password_page.dart';
 import 'package:src/features/authentication/presentation/pages/sign_in_page.dart';
+import 'package:src/features/authentication/presentation/pages/sign_up_page.dart';
 
 // GoRouter Navigator Keys
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -23,12 +25,12 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       name: 'signUp',
       path: '/sign-up',
-      builder: (context, state) => const Placeholder(),
+      builder: (context, state) => const SignUpPage(),
     ),
     GoRoute(
       name: 'forgotPassword',
       path: '/forgot-password',
-      builder: (context, state) => const Placeholder(),
+      builder: (context, state) => const ForgotPasswordPage(),
     ),
 
     // Admin Shell Route
@@ -41,17 +43,17 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           name: 'adminDashboard',
           path: '/admin-dashboard',
-          builder: (context, state) => const Placeholder(),
+          builder: (context, state) => const Scaffold(body: Center(child: Text('Admin Dashboard'))),
         ),
         GoRoute(
           name: 'adminMap',
           path: '/admin-map',
-          builder: (context, state) => const Placeholder(),
+          builder: (context, state) => const Scaffold(body: Center(child: Text('Admin Map'))),
         ),
         GoRoute(
           name: 'adminUserManagement',
           path: '/admin-user-management',
-          builder: (context, state) => const Placeholder(),
+          builder: (context, state) => const Scaffold(body: Center(child: Text('User Management'))),
         ),
       ],
     ),
@@ -66,17 +68,17 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           name: 'userMap',
           path: '/user-map',
-          builder: (context, state) => const Placeholder(),
+          builder: (context, state) => const Scaffold(body: Center(child: Text('User Map'))),
         ),
         GoRoute(
           name: 'userReport',
           path: '/user-report',
-          builder: (context, state) => const Placeholder(),
+          builder: (context, state) => const Scaffold(body: Center(child: Text('User Report'))),
         ),
         GoRoute(
           name: 'userProfile',
           path: '/user-profile',
-          builder: (context, state) => const Placeholder(),
+          builder: (context, state) => const Scaffold(body: Center(child: Text('User Profile'))),
         ),
       ],
     ),

@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-class ReportEntity extends Equatable {
+class DashboardReportEntity {
   final String id;
   final String userId;
   final String title;
@@ -10,7 +8,7 @@ class ReportEntity extends Equatable {
   final String status;
   final Location location;
 
-  const ReportEntity({
+  const DashboardReportEntity({
     required this.id,
     required this.userId,
     required this.title,
@@ -20,9 +18,6 @@ class ReportEntity extends Equatable {
     required this.status,
     required this.location,
   });
-
-  @override
-  List<Object?> get props => [id, userId, title, description, imageUrl, createdAt, status, location];
 }
 
 class Location {

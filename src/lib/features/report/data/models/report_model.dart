@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:src/features/report/domain/entities/location_entity.dart';
 import 'package:src/features/report/domain/entities/report_entity.dart';
 
 class ReportModel {
@@ -58,7 +57,7 @@ class ReportModel {
       imageUrl: imageUrl,
       createdAt: createdAt,
       status: status,
-      location: LocationEntity(
+      location: Location(
         latitude: location.latitude,
         longitude: location.longitude,
       ),

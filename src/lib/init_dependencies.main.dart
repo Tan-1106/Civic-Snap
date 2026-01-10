@@ -7,6 +7,7 @@ Future<void> initDependencies() async {
   await _initCore();
   _initAuthentication();
   _initReport();
+  _initDashboard();
 }
 
 // Initialize Core Module
@@ -118,6 +119,7 @@ void _initAuthentication() {
   );
 }
 
+// Initialize Report Module
 void _initReport() {
   // Data Sources
   serviceLocator.registerFactory<ReportRemoteDataSource>(
@@ -150,6 +152,58 @@ void _initReport() {
   // Providers
   serviceLocator.registerLazySingleton(
     () => ReportProvider(
+      serviceLocator(),
+      serviceLocator(),
+    ),
+  );
+}
+
+// Initialize Dashboard Module
+void _initDashboard() {
+  // Data Sources
+  serviceLocator.registerFactory<DashboardRemoteDataSource>(
+    () => DashboardRemoteDataSourceImpl(
+      serviceLocator(),
+    ),
+  );
+
+  // Repositories
+  serviceLocator.registerFactory<DashboardRepository>(
+    () => DashboardRepositoryImpl(
+      serviceLocator(),
+    ),
+  );
+
+  // Use Cases
+  serviceLocator.registerFactory(
+    () => GetReportsUseCase(
+      serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+        () => GetReportByIdUseCase(
+    serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+        () => GetReportsByStatusUseCase(
+    serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+        () => GetReportsByUserUseCase(
+    serviceLocator(),
+    ),
+  );
+
+  // Providers
+  serviceLocator.registerLazySingleton(
+    () => DashboardProvider(
+      serviceLocator(),
+      serviceLocator(),
       serviceLocator(),
       serviceLocator(),
     ),

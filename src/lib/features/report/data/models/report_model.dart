@@ -10,6 +10,8 @@ class ReportModel {
   final DateTime createdAt;
   final String status;
   final GeoPoint location;
+  final String? response;
+  final DateTime? respondedAt;
 
   ReportModel({
     required this.id,
@@ -20,20 +22,9 @@ class ReportModel {
     required this.createdAt,
     required this.status,
     required this.location,
+    this.response,
+    this.respondedAt,
   });
-
-  factory ReportModel.fromMap(Map<String, dynamic> map) {
-    return ReportModel(
-      id: map['id'] ?? '',
-      userId: map['user_id'] ?? '',
-      title: map['title'] ?? '',
-      description: map['description'] ?? '',
-      imageUrl: map['image_url'] ?? '',
-      createdAt: (map['created_at'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      status: map['status'] ?? 'Pending',
-      location: map['location'] as GeoPoint? ?? const GeoPoint(0, 0),
-    );
-  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -45,6 +36,8 @@ class ReportModel {
       'created_at': Timestamp.fromDate(createdAt),
       'status': status,
       'location': location,
+      'response': response,
+      'responded_at': respondedAt != null ? Timestamp.fromDate(respondedAt!) : null,
     };
   }
 
@@ -61,6 +54,8 @@ class ReportModel {
         latitude: location.latitude,
         longitude: location.longitude,
       ),
+      response: response,
+      respondedAt: respondedAt,
     );
   }
 }

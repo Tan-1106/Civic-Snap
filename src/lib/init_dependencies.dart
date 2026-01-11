@@ -11,6 +11,7 @@ import 'package:src/features/dashboard/domain/usecases/get_report_by_id.dart';
 import 'package:src/features/dashboard/domain/usecases/get_reports.dart';
 import 'package:src/features/dashboard/domain/usecases/get_reports_by_status.dart';
 import 'package:src/features/dashboard/domain/usecases/get_reports_by_user.dart';
+import 'package:src/features/dashboard/domain/usecases/respond_to_report.dart';
 import 'package:src/features/dashboard/presentation/providers/dashboard_provider.dart';
 import 'package:src/features/report/data/datasources/report_remote_data_source.dart';
 import 'package:src/features/report/data/repositories/report_repository_impl.dart';

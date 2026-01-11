@@ -7,6 +7,8 @@ class DashboardReportEntity {
   final DateTime createdAt;
   final String status;
   final Location location;
+  final String? response;
+  final DateTime? respondedAt;
 
   const DashboardReportEntity({
     required this.id,
@@ -17,6 +19,8 @@ class DashboardReportEntity {
     required this.createdAt,
     required this.status,
     required this.location,
+    required this.response,
+    required this.respondedAt,
   });
 }
 

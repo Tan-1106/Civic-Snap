@@ -15,6 +15,7 @@ class _AdminShellLayoutState extends State<AdminShellLayout> {
   int _calculateSelectedIndex(BuildContext context) {
     final String location = GoRouterState.of(context).uri.toString();
 
+    if (location.startsWith('/admin-report-details')) return 0;
     if (location.startsWith('/admin-map')) return 1;
     if (location.startsWith('/admin-user-management')) return 2;
     return 0;
@@ -34,17 +35,14 @@ class _AdminShellLayoutState extends State<AdminShellLayout> {
     }
   }
 
-  String _getTitle(int selectedIndex) {
-    switch (selectedIndex) {
-      case 0:
-        return 'Dashboard';
-      case 1:
-        return 'Map';
-      case 2:
-        return 'User Management';
-      default:
-        return 'Admin Panel';
-    }
+  String _getTitle(BuildContext context) {
+    final String location = GoRouterState.of(context).uri.toString();
+
+    if (location.startsWith('/admin-report-details')) return 'Report Details';
+    if (location.startsWith('/admin-map')) return 'Map';
+    if (location.startsWith('/admin-user-management')) return 'User Management';
+    if (location.startsWith('/admin-dashboard')) return 'Dashboard';
+    return 'Admin Panel';
   }
 
   @override
@@ -53,7 +51,7 @@ class _AdminShellLayoutState extends State<AdminShellLayout> {
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: _getTitle(selectedIndex),
+        title: _getTitle(context),
       ),
       body: widget.child,
       bottomNavigationBar: NavigationBar(

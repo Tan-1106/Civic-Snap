@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:src/core/common/widgets/loader.dart';
 import 'package:src/features/dashboard/presentation/providers/dashboard_provider.dart';
@@ -109,7 +110,10 @@ class _DashboardPageState extends State<DashboardPage> {
                         return ReportItem(
                           report: report,
                           onSeeMore: () {
-
+                            context.push(
+                              '/admin-report-details',
+                              extra: report,
+                            );
                           },
                         );
                       },

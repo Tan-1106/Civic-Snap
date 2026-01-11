@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:src/core/common/layouts/admin_shell_layout.dart';
 import 'package:src/core/common/layouts/user_shell_layout.dart';
-import 'package:src/features/authentication/presentation/pages/forgot_password_page.dart';
-import 'package:src/features/authentication/presentation/pages/sign_in_page.dart';
-import 'package:src/features/authentication/presentation/pages/sign_up_page.dart';
-import 'package:src/features/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:src/core/common/layouts/admin_shell_layout.dart';
 import 'package:src/features/map/presentation/pages/map_screen.dart';
 import 'package:src/features/report/presentation/pages/send_report_page.dart';
+import 'package:src/features/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:src/features/authentication/presentation/pages/sign_in_page.dart';
+import 'package:src/features/authentication/presentation/pages/sign_up_page.dart';
+import 'package:src/features/dashboard/presentation/pages/report_details_page.dart';
+import 'package:src/features/dashboard/domain/entities/dashboard_report_entity.dart';
+import 'package:src/features/authentication/presentation/pages/forgot_password_page.dart';
 
 // GoRouter Navigator Keys
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -47,6 +49,14 @@ final GoRouter appRouter = GoRouter(
           name: 'adminDashboard',
           path: '/admin-dashboard',
           builder: (context, state) => const DashboardPage(),
+        ),
+        GoRoute(
+          name: 'adminReportDetails',
+          path: '/admin-report-details',
+          builder: (context, state) {
+            final report = state.extra as DashboardReportEntity;
+            return ReportDetailsPage(report: report);
+          },
         ),
         GoRoute(
           name: 'adminMap',

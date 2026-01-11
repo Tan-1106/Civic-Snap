@@ -99,10 +99,7 @@ class _SendReportPageState extends State<SendReportPage> {
 
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 20,
-          horizontal: 20,
-        ),
+        padding: const EdgeInsets.all(20),
         child: isLoading
             ? const Center(child: Loader())
             : SingleChildScrollView(

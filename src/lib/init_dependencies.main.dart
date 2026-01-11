@@ -182,26 +182,33 @@ void _initDashboard() {
   );
 
   serviceLocator.registerFactory(
-        () => GetReportByIdUseCase(
-    serviceLocator(),
+    () => GetReportByIdUseCase(
+      serviceLocator(),
     ),
   );
 
   serviceLocator.registerFactory(
-        () => GetReportsByStatusUseCase(
-    serviceLocator(),
+    () => GetReportsByStatusUseCase(
+      serviceLocator(),
     ),
   );
 
   serviceLocator.registerFactory(
-        () => GetReportsByUserUseCase(
-    serviceLocator(),
+    () => GetReportsByUserUseCase(
+      serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+    () => RespondToReportUseCase(
+      serviceLocator(),
     ),
   );
 
   // Providers
   serviceLocator.registerLazySingleton(
     () => DashboardProvider(
+      serviceLocator(),
       serviceLocator(),
       serviceLocator(),
       serviceLocator(),

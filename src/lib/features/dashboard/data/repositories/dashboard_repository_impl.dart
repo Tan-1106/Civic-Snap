@@ -73,4 +73,22 @@ class DashboardRepositoryImpl implements DashboardRepository {
       return left(Failure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> respondToReport({
+    required String reportId,
+    ReportStatus? newStatus,
+    String? response,
+  }) async {
+    try {
+      final result = await remoteDataSource.respondToReport(
+        reportId: reportId,
+        newStatus: newStatus,
+        response: response,
+      );
+      return right(result);
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
 }

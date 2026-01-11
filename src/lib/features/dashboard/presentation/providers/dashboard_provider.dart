@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:src/core/common/enums/report_status.dart';
 import 'package:src/features/dashboard/domain/entities/dashboard_report_entity.dart';
 import 'package:src/features/dashboard/domain/usecases/get_report_by_id.dart';
 import 'package:src/features/dashboard/domain/usecases/get_reports.dart';
 import 'package:src/features/dashboard/domain/usecases/get_reports_by_status.dart';
 import 'package:src/features/dashboard/domain/usecases/get_reports_by_user.dart';
+import 'package:src/features/dashboard/domain/usecases/respond_to_report.dart';
 
 class DashboardProvider extends ChangeNotifier {
   final GetReportsUseCase _getReportsUseCase;
   final GetReportByIdUseCase _getReportByIdUseCase;
   final GetReportsByStatusUseCase _getReportsByStatusUseCase;
   final GetReportsByUserUseCase _getReportsByUserUseCase;
+  final RespondToReportUseCase _respondToReportUseCase;
 
   DashboardProvider(
     GetReportsUseCase getReportsUseCase,
     GetReportByIdUseCase getReportByIdUseCase,
     GetReportsByStatusUseCase getReportsByStatusUseCase,
     GetReportsByUserUseCase getReportsByUserUseCase,
+    RespondToReportUseCase respondToReportUseCase,
   ) : _getReportsUseCase = getReportsUseCase,
       _getReportByIdUseCase = getReportByIdUseCase,
       _getReportsByStatusUseCase = getReportsByStatusUseCase,
-      _getReportsByUserUseCase = getReportsByUserUseCase;
+      _getReportsByUserUseCase = getReportsByUserUseCase,
+      _respondToReportUseCase = respondToReportUseCase;
 
   // State
   String? _errorMessage;
@@ -49,7 +54,6 @@ class DashboardProvider extends ChangeNotifier {
 
   /// Fetch initial reports (refresh)
   Future<void> getReports({bool refresh = false}) async {
-    debugPrint('DEBUG: getReports called, refresh: $refresh, isLoading: $_isLoading');
     if (_isLoading) return;
 
     if (refresh) {
@@ -68,11 +72,9 @@ class DashboardProvider extends ChangeNotifier {
 
     result.fold(
       (failure) {
-        debugPrint('DEBUG: getReports error: ${failure.message}');
         _errorMessage = failure.message;
       },
       (data) {
-        debugPrint('DEBUG: getReports success: ${data.length} reports loaded');
         _reports = data;
         _hasMore = data.length >= _pageSize;
         _lastReportId = data.isNotEmpty ? data.last.id : null;
@@ -124,6 +126,30 @@ class DashboardProvider extends ChangeNotifier {
         return null;
       },
       (report) => report,
+    );
+  }
+
+  // Respond to report
+  Future<bool> respondToReport({
+    required String reportId,
+    ReportStatus? newStatus,
+    String? response,
+  }) async {
+    final result = await _respondToReportUseCase.call(
+      RespondToReportParams(
+        reportId: reportId,
+        newStatus: newStatus,
+        response: response,
+      ),
+    );
+
+    return result.fold(
+      (failure) {
+        _errorMessage = failure.message;
+        notifyListeners();
+        return false;
+      },
+      (success) => true,
     );
   }
 

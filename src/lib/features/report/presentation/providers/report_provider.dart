@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:src/core/common/enums/report_status.dart';
 import 'package:src/features/report/domain/usecases/submit_report.dart';
 import 'package:src/features/report/domain/usecases/upload_image.dart';
 
@@ -49,7 +50,7 @@ class ReportProvider extends ChangeNotifier {
             description: description,
             imageUrl: imageUrl,
             createdAt: DateTime.now(),
-            status: 'Pending',
+            status: ReportStatus.pending.displayName,
             location: GeoPoint(position.latitude, position.longitude),
           ),
         );

@@ -10,6 +10,8 @@ class DashboardReportModel {
   final DateTime createdAt;
   final String status;
   final GeoPoint location;
+  final String? response;
+  final DateTime? respondedAt;
 
   DashboardReportModel({
     required this.id,
@@ -20,6 +22,8 @@ class DashboardReportModel {
     required this.createdAt,
     required this.status,
     required this.location,
+    this.response,
+    this.respondedAt,
   });
 
   factory DashboardReportModel.fromDocument(DocumentSnapshot doc) {
@@ -33,6 +37,8 @@ class DashboardReportModel {
       createdAt: (data['created_at'] as Timestamp?)?.toDate() ?? DateTime.now(),
       status: data['status'] ?? 'Pending',
       location: data['location'] as GeoPoint? ?? const GeoPoint(0, 0),
+      response: data['response'] as String?,
+      respondedAt: (data['responded_at'] as Timestamp?)?.toDate(),
     );
   }
 
@@ -49,6 +55,8 @@ class DashboardReportModel {
         latitude: location.latitude,
         longitude: location.longitude,
       ),
+      response: response,
+      respondedAt: respondedAt,
     );
   }
 }

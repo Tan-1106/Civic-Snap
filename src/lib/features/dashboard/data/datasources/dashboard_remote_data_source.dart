@@ -21,6 +21,12 @@ abstract interface class DashboardRemoteDataSource {
     required int limit,
     String? lastDocumentId,
   });
+
+  Future<bool> respondToReport({
+    required String reportId,
+    ReportStatus? newStatus,
+    String? response,
+  });
 }
 
 class DashboardRemoteDataSourceImpl implements DashboardRemoteDataSource {
@@ -34,10 +40,7 @@ class DashboardRemoteDataSourceImpl implements DashboardRemoteDataSource {
     String? lastDocumentId,
   }) async {
     try {
-      Query query = firestore
-          .collection('reports')
-          .orderBy('created_at', descending: true)
-          .limit(limit);
+      Query query = firestore.collection('reports').orderBy('created_at', descending: true).limit(limit);
 
       if (lastDocumentId != null) {
         final lastDoc = await firestore.collection('reports').doc(lastDocumentId).get();
@@ -45,9 +48,7 @@ class DashboardRemoteDataSourceImpl implements DashboardRemoteDataSource {
       }
 
       final querySnapshot = await query.get();
-      return querySnapshot.docs
-          .map((doc) => DashboardReportModel.fromDocument(doc))
-          .toList();
+      return querySnapshot.docs.map((doc) => DashboardReportModel.fromDocument(doc)).toList();
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -112,6 +113,31 @@ class DashboardRemoteDataSourceImpl implements DashboardRemoteDataSource {
           return querySnapshot.docs.map((doc) => DashboardReportModel.fromDocument(doc)).toList();
         });
       }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  @override
+  Future<bool> respondToReport({
+    required String reportId,
+    ReportStatus? newStatus,
+    String? response,
+  }) async {
+    try {
+      final reportRef = firestore.collection('reports').doc(reportId);
+      final updates = <String, dynamic>{};
+
+      if (newStatus != null) {
+        updates['status'] = newStatus.displayName;
+      }
+
+      updates['response'] = response;
+
+      updates['updated_at'] = FieldValue.serverTimestamp();
+
+      await reportRef.update(updates);
+      return true;
     } catch (e) {
       throw Exception(e.toString());
     }

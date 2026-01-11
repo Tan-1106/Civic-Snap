@@ -34,17 +34,13 @@ class _UserShellLayoutState extends State<UserShellLayout> {
     }
   }
 
-  String _getTitle(int selectedIndex) {
-    switch (selectedIndex) {
-      case 0:
-        return 'Map';
-      case 1:
-        return 'Report';
-      case 2:
-        return 'Your Profile';
-      default:
-        return 'User Panel';
-    }
+  String _getTitle(BuildContext context) {
+    final String location = GoRouterState.of(context).uri.toString();
+
+    if (location.startsWith('/user-report')) return 'Report';
+    if (location.startsWith('/user-profile')) return 'Your Profile';
+    if (location.startsWith('/user-map')) return 'Map';
+    return 'User Panel';
   }
 
   @override
@@ -53,7 +49,7 @@ class _UserShellLayoutState extends State<UserShellLayout> {
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: _getTitle(selectedIndex),
+        title: _getTitle(context),
       ),
       body: widget.child,
       bottomNavigationBar: NavigationBar(

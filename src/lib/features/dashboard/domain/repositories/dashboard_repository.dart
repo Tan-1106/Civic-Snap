@@ -22,4 +22,10 @@ abstract interface class DashboardRepository {
     required int limit,
     String? lastReportId,
   });
+
+  Future<Either<Failure, bool>> respondToReport({
+    required String reportId,
+    ReportStatus? newStatus,
+    String? response,
+  });
 }

@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:src/core/common/enums/report_status.dart';
 import 'package:src/features/dashboard/domain/usecases/get_reports.dart';
-import 'package:src/features/dashboard/domain/usecases/get_report_by_id.dart';
 import 'package:src/features/dashboard/domain/usecases/respond_to_report.dart';
 import 'package:src/features/dashboard/domain/entities/dashboard_report_entity.dart';
 
 class DashboardProvider extends ChangeNotifier {
   final GetReportsUseCase _getReportsUseCase;
-  final GetReportByIdUseCase _getReportByIdUseCase;
   final RespondToReportUseCase _respondToReportUseCase;
 
   DashboardProvider(
     GetReportsUseCase getReportsUseCase,
-    GetReportByIdUseCase getReportByIdUseCase,
     RespondToReportUseCase respondToReportUseCase,
   ) : _getReportsUseCase = getReportsUseCase,
-      _getReportByIdUseCase = getReportByIdUseCase,
       _respondToReportUseCase = respondToReportUseCase;
 
-  // State
+  // States
   String? _errorMessage;
 
   String? get errorMessage => _errorMessage;
@@ -27,7 +23,6 @@ class DashboardProvider extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-  // Pagination state
   List<DashboardReportEntity> _reports = [];
 
   List<DashboardReportEntity> get reports => _reports;
@@ -120,19 +115,6 @@ class DashboardProvider extends ChangeNotifier {
 
     _isLoadingMore = false;
     notifyListeners();
-  }
-
-  /// Get report by ID
-  Future<DashboardReportEntity?> getReportById(String reportId) async {
-    final result = await _getReportByIdUseCase.call(GetReportByIdParams(reportId: reportId));
-    return result.fold(
-      (failure) {
-        _errorMessage = failure.message;
-        notifyListeners();
-        return null;
-      },
-      (report) => report,
-    );
   }
 
   // Respond to report

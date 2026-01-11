@@ -10,8 +10,6 @@ abstract interface class DashboardRemoteDataSource {
     String? lastDocumentId,
   });
 
-  Future<DashboardReportModel> getReportById(String reportId);
-
   Future<bool> respondToReport({
     required String reportId,
     ReportStatus? newStatus,
@@ -47,20 +45,6 @@ class DashboardRemoteDataSourceImpl implements DashboardRemoteDataSource {
 
       final querySnapshot = await query.get();
       return querySnapshot.docs.map((doc) => DashboardReportModel.fromDocument(doc)).toList();
-    } catch (e) {
-      throw Exception(e.toString());
-    }
-  }
-
-  @override
-  Future<DashboardReportModel> getReportById(String reportId) async {
-    try {
-      final doc = await firestore.collection('reports').doc(reportId).get();
-      if (doc.exists) {
-        return DashboardReportModel.fromDocument(doc);
-      } else {
-        throw Exception('Report not found');
-      }
     } catch (e) {
       throw Exception(e.toString());
     }

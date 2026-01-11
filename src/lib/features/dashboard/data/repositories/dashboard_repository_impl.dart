@@ -33,16 +33,6 @@ class DashboardRepositoryImpl implements DashboardRepository {
   }
 
   @override
-  Future<Either<Failure, DashboardReportEntity>> getReportById(String reportId) async {
-    try {
-      final report = await remoteDataSource.getReportById(reportId);
-      return right(report.toEntity());
-    } catch (e) {
-      return left(Failure(e.toString()));
-    }
-  }
-
-  @override
   Future<Either<Failure, bool>> respondToReport({
     required String reportId,
     ReportStatus? newStatus,

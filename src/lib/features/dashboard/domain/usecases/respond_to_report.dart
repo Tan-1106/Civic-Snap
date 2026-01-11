@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:src/core/common/enums/report_status.dart';
 import 'package:src/core/error/failure.dart';
 import 'package:src/core/utils/usecase.dart';
+import 'package:src/core/common/enums/report_status.dart';
 import 'package:src/features/dashboard/domain/repositories/dashboard_repository.dart';
 
 class RespondToReportUseCase implements UseCase<bool, RespondToReportParams> {

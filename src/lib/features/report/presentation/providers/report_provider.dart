@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:src/core/common/enums/report_status.dart';
 import 'package:src/features/report/domain/usecases/submit_report.dart';
 import 'package:src/features/report/domain/usecases/upload_image.dart';
@@ -16,6 +16,7 @@ class ReportProvider extends ChangeNotifier {
   ) : _uploadImageUseCase = uploadImageUseCase,
       _submitReportUseCase = submitReportUseCase;
 
+  // States
   String? _errorMessage;
 
   String? get errorMessage => _errorMessage;
@@ -24,6 +25,7 @@ class ReportProvider extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
+  // Submit a new report
   Future<void> submitReport({
     required String userId,
     required String title,
@@ -68,6 +70,7 @@ class ReportProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Clear error message
   void clearError() {
     _errorMessage = null;
     notifyListeners();

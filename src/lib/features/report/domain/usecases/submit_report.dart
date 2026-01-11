@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:src/core/error/failure.dart';
 import 'package:src/core/utils/usecase.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:src/features/report/domain/repositories/report_repository.dart';
 
 class SubmitReportUseCase implements UseCase<void, SubmitReportParams> {

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:src/core/utils/usecase.dart';
 import 'package:src/features/authentication/domain/entities/user_entity.dart';
 import 'package:src/features/authentication/domain/usecases/forgot_password.dart';
-import 'package:src/features/authentication/domain/usecases/sign_in_with_email.dart';
-import 'package:src/features/authentication/domain/usecases/sign_up_with_email.dart';
 import 'package:src/features/authentication/domain/usecases/save_credentials.dart';
-import 'package:src/features/authentication/domain/usecases/get_saved_credentials.dart';
 import 'package:src/features/authentication/domain/usecases/clear_credentials.dart';
+import 'package:src/features/authentication/domain/usecases/sign_up_with_email.dart';
+import 'package:src/features/authentication/domain/usecases/sign_in_with_email.dart';
 import 'package:src/features/authentication/domain/usecases/get_route_for_role.dart';
+import 'package:src/features/authentication/domain/usecases/get_saved_credentials.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   final SignUpWithEmailUseCase _signUpWithEmailUseCase;
@@ -34,6 +34,7 @@ class AuthenticationProvider extends ChangeNotifier {
       _clearCredentialsUseCase = clearCredentialsUseCase,
       _getRouteForRoleUseCase = getRouteForRoleUseCase;
 
+  // States
   UserEntity? _user;
 
   UserEntity? get user => _user;
@@ -54,6 +55,7 @@ class AuthenticationProvider extends ChangeNotifier {
 
   Map<String, String?>? get savedCredentials => _savedCredentials;
 
+  // Sign Up with Email
   Future<void> signUpWithEmail({
     required String name,
     required String email,
@@ -84,6 +86,7 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Sign In with Email
   Future<void> signInWithEmail({
     required String email,
     required String password,
@@ -117,6 +120,7 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Forgot Password
   Future<void> forgotPassword({
     required String email,
   }) async {
@@ -166,6 +170,7 @@ class AuthenticationProvider extends ChangeNotifier {
     );
   }
 
+  // Load saved credentials
   Future<void> loadSavedCredentials() async {
     final result = await _getSavedCredentialsUseCase(NoParams());
 
@@ -182,6 +187,7 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Clear saved credentials
   Future<void> clearCredentials() async {
     final result = await _clearCredentialsUseCase(NoParams());
 
@@ -220,10 +226,12 @@ class AuthenticationProvider extends ChangeNotifier {
     );
   }
 
+  // Clear redirect route
   void clearRedirectRoute() {
     _redirectRoute = null;
   }
 
+  // Clear error message
   void clearError() {
     _errorMessage = null;
     notifyListeners();

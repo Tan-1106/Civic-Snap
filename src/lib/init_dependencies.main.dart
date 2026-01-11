@@ -180,12 +180,6 @@ void _initDashboard() {
   );
 
   serviceLocator.registerFactory(
-    () => GetReportByIdUseCase(
-      serviceLocator(),
-    ),
-  );
-
-  serviceLocator.registerFactory(
     () => RespondToReportUseCase(
       serviceLocator(),
     ),
@@ -194,7 +188,6 @@ void _initDashboard() {
   // Providers
   serviceLocator.registerLazySingleton(
     () => DashboardProvider(
-      serviceLocator(),
       serviceLocator(),
       serviceLocator(),
     ),

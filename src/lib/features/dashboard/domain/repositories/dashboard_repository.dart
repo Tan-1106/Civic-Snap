@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:src/core/common/enums/report_status.dart';
 import 'package:src/core/error/failure.dart';
+import 'package:src/core/common/enums/report_status.dart';
 import 'package:src/features/dashboard/domain/entities/dashboard_report_entity.dart';
 
 abstract interface class DashboardRepository {
@@ -10,8 +10,6 @@ abstract interface class DashboardRepository {
     String? userId,
     String? lastReportId,
   });
-
-  Future<Either<Failure, DashboardReportEntity>> getReportById(String reportId);
 
   Future<Either<Failure, bool>> respondToReport({
     required String reportId,

@@ -1,14 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:src/core/utils/show_snackbar.dart';
 import 'package:src/core/common/widgets/loader.dart';
 import 'package:src/core/common/widgets/primary_button.dart';
-import 'package:src/core/utils/show_snackbar.dart';
-import 'package:src/features/authentication/presentation/providers/authentication_provider.dart';
 import 'package:src/features/report/presentation/providers/report_provider.dart';
+import 'package:src/features/authentication/presentation/providers/authentication_provider.dart';
 
 class SendReportPage extends StatefulWidget {
   const SendReportPage({super.key});

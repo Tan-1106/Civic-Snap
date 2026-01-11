@@ -1,29 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:src/core/common/enums/report_status.dart';
-import 'package:src/features/dashboard/domain/entities/dashboard_report_entity.dart';
-import 'package:src/features/dashboard/domain/usecases/get_report_by_id.dart';
 import 'package:src/features/dashboard/domain/usecases/get_reports.dart';
-import 'package:src/features/dashboard/domain/usecases/get_reports_by_status.dart';
-import 'package:src/features/dashboard/domain/usecases/get_reports_by_user.dart';
+import 'package:src/features/dashboard/domain/usecases/get_report_by_id.dart';
 import 'package:src/features/dashboard/domain/usecases/respond_to_report.dart';
+import 'package:src/features/dashboard/domain/entities/dashboard_report_entity.dart';
 
 class DashboardProvider extends ChangeNotifier {
   final GetReportsUseCase _getReportsUseCase;
   final GetReportByIdUseCase _getReportByIdUseCase;
-  final GetReportsByStatusUseCase _getReportsByStatusUseCase;
-  final GetReportsByUserUseCase _getReportsByUserUseCase;
   final RespondToReportUseCase _respondToReportUseCase;
 
   DashboardProvider(
     GetReportsUseCase getReportsUseCase,
     GetReportByIdUseCase getReportByIdUseCase,
-    GetReportsByStatusUseCase getReportsByStatusUseCase,
-    GetReportsByUserUseCase getReportsByUserUseCase,
     RespondToReportUseCase respondToReportUseCase,
   ) : _getReportsUseCase = getReportsUseCase,
       _getReportByIdUseCase = getReportByIdUseCase,
-      _getReportsByStatusUseCase = getReportsByStatusUseCase,
-      _getReportsByUserUseCase = getReportsByUserUseCase,
       _respondToReportUseCase = respondToReportUseCase;
 
   // State
@@ -52,6 +44,14 @@ class DashboardProvider extends ChangeNotifier {
 
   static const int _pageSize = 10;
 
+  ReportStatus? _currentFilterStatus;
+
+  ReportStatus? get currentFilterStatus => _currentFilterStatus;
+
+  String? _currentFilterUserId;
+
+  String? get currentFilterUserId => _currentFilterUserId;
+
   /// Fetch initial reports (refresh)
   Future<void> getReports({bool refresh = false}) async {
     if (_isLoading) return;
@@ -67,7 +67,11 @@ class DashboardProvider extends ChangeNotifier {
     notifyListeners();
 
     final result = await _getReportsUseCase.call(
-      GetReportsParams(limit: _pageSize),
+      GetReportsParams(
+        limit: _pageSize,
+        status: _currentFilterStatus,
+        userId: _currentFilterUserId,
+      ),
     );
 
     result.fold(
@@ -96,6 +100,8 @@ class DashboardProvider extends ChangeNotifier {
     final result = await _getReportsUseCase.call(
       GetReportsParams(
         limit: _pageSize,
+        status: _currentFilterStatus,
+        userId: _currentFilterUserId,
         lastReportId: _lastReportId,
       ),
     );
@@ -151,6 +157,18 @@ class DashboardProvider extends ChangeNotifier {
       },
       (success) => true,
     );
+  }
+
+  // Set filter status
+  void setFilterStatus(ReportStatus? status) {
+    _currentFilterStatus = status;
+    notifyListeners();
+  }
+
+  // Set filter user ID
+  void setFilterUserId(String? userId) {
+    _currentFilterUserId = userId;
+    notifyListeners();
   }
 
   /// Clear error message

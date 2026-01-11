@@ -9,6 +9,7 @@ import 'package:src/core/config/routes/app_router.dart';
 import 'package:src/features/authentication/presentation/providers/authentication_provider.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await initDependencies();
   runApp(
     MultiProvider(

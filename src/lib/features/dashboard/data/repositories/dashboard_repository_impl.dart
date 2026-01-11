@@ -15,11 +15,15 @@ class DashboardRepositoryImpl implements DashboardRepository {
   @override
   Future<Either<Failure, List<DashboardReportEntity>>> getReports({
     required int limit,
+    ReportStatus? status,
+    String? userId,
     String? lastReportId,
   }) async {
     try {
       final reports = await remoteDataSource.getReports(
         limit: limit,
+        status: status,
+        userId: userId,
         lastDocumentId: lastReportId,
       );
       return right(reports.map((e) => e.toEntity()).toList());
@@ -33,42 +37,6 @@ class DashboardRepositoryImpl implements DashboardRepository {
     try {
       final report = await remoteDataSource.getReportById(reportId);
       return right(report.toEntity());
-    } catch (e) {
-      return left(Failure(e.toString()));
-    }
-  }
-
-  @override
-  Future<Either<Failure, List<DashboardReportEntity>>> getReportsByStatus({
-    required ReportStatus status,
-    required int limit,
-    String? lastReportId,
-  }) async {
-    try {
-      final reports = await remoteDataSource.getReportsByStatus(
-        status: status,
-        limit: limit,
-        lastDocumentId: lastReportId,
-      );
-      return right(reports.map((e) => e.toEntity()).toList());
-    } catch (e) {
-      return left(Failure(e.toString()));
-    }
-  }
-
-  @override
-  Future<Either<Failure, List<DashboardReportEntity>>> getReportsByUser({
-    required String userId,
-    required int limit,
-    String? lastReportId,
-  }) async {
-    try {
-      final reports = await remoteDataSource.getReportsByUser(
-        userId: userId,
-        limit: limit,
-        lastDocumentId: lastReportId,
-      );
-      return right(reports.map((e) => e.toEntity()).toList());
     } catch (e) {
       return left(Failure(e.toString()));
     }

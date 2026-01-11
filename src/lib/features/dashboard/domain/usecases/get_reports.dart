@@ -1,6 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:src/core/error/failure.dart';
 import 'package:src/core/utils/usecase.dart';
+import 'package:src/core/common/enums/report_status.dart';
 import 'package:src/features/dashboard/domain/entities/dashboard_report_entity.dart';
 import 'package:src/features/dashboard/domain/repositories/dashboard_repository.dart';
 
@@ -13,6 +14,8 @@ class GetReportsUseCase implements UseCase<List<DashboardReportEntity>, GetRepor
   Future<Either<Failure, List<DashboardReportEntity>>> call(GetReportsParams params) {
     return dashboardRepository.getReports(
       limit: params.limit,
+      status: params.status,
+      userId: params.userId,
       lastReportId: params.lastReportId,
     );
   }
@@ -20,10 +23,14 @@ class GetReportsUseCase implements UseCase<List<DashboardReportEntity>, GetRepor
 
 class GetReportsParams {
   final int limit;
-  String? lastReportId;
+  final ReportStatus? status;
+  final String? userId;
+  final String? lastReportId;
 
   GetReportsParams({
     this.lastReportId,
+    this.status,
+    this.userId,
     this.limit = 10,
   });
 }

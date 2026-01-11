@@ -12,8 +12,6 @@ Future<void> initDependencies() async {
 
 // Initialize Core Module
 Future<void> _initCore() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
   // Firebase Initialization
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -188,18 +186,6 @@ void _initDashboard() {
   );
 
   serviceLocator.registerFactory(
-    () => GetReportsByStatusUseCase(
-      serviceLocator(),
-    ),
-  );
-
-  serviceLocator.registerFactory(
-    () => GetReportsByUserUseCase(
-      serviceLocator(),
-    ),
-  );
-
-  serviceLocator.registerFactory(
     () => RespondToReportUseCase(
       serviceLocator(),
     ),
@@ -208,8 +194,6 @@ void _initDashboard() {
   // Providers
   serviceLocator.registerLazySingleton(
     () => DashboardProvider(
-      serviceLocator(),
-      serviceLocator(),
       serviceLocator(),
       serviceLocator(),
       serviceLocator(),

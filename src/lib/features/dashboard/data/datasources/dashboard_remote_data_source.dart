@@ -5,22 +5,12 @@ import 'package:src/features/dashboard/data/models/dashboard_report_model.dart';
 abstract interface class DashboardRemoteDataSource {
   Future<List<DashboardReportModel>> getReports({
     required int limit,
+    ReportStatus? status,
+    String? userId,
     String? lastDocumentId,
   });
 
   Future<DashboardReportModel> getReportById(String reportId);
-
-  Future<List<DashboardReportModel>> getReportsByStatus({
-    required ReportStatus status,
-    required int limit,
-    String? lastDocumentId,
-  });
-
-  Future<List<DashboardReportModel>> getReportsByUser({
-    required String userId,
-    required int limit,
-    String? lastDocumentId,
-  });
 
   Future<bool> respondToReport({
     required String reportId,
@@ -37,11 +27,19 @@ class DashboardRemoteDataSourceImpl implements DashboardRemoteDataSource {
   @override
   Future<List<DashboardReportModel>> getReports({
     required int limit,
+    ReportStatus? status,
+    String? userId,
     String? lastDocumentId,
   }) async {
     try {
-      Query query = firestore.collection('reports').orderBy('created_at', descending: true).limit(limit);
-
+      Query query = firestore.collection('reports').orderBy('created_at', descending: true);
+      if (status != null) {
+        query = query.where('status', isEqualTo: status.displayName);
+      }
+      if (userId != null) {
+        query = query.where('user_id', isEqualTo: userId);
+      }
+      query = query.limit(limit);
       if (lastDocumentId != null) {
         final lastDoc = await firestore.collection('reports').doc(lastDocumentId).get();
         query = query.startAfterDocument(lastDoc);
@@ -62,56 +60,6 @@ class DashboardRemoteDataSourceImpl implements DashboardRemoteDataSource {
         return DashboardReportModel.fromDocument(doc);
       } else {
         throw Exception('Report not found');
-      }
-    } catch (e) {
-      throw Exception(e.toString());
-    }
-  }
-
-  @override
-  Future<List<DashboardReportModel>> getReportsByStatus({
-    required ReportStatus status,
-    required int limit,
-    String? lastDocumentId,
-  }) async {
-    try {
-      Query query = firestore.collection('reports').where('status', isEqualTo: status.displayName).orderBy('created_at', descending: true).limit(limit);
-      if (lastDocumentId != null) {
-        return firestore.collection('reports').doc(lastDocumentId).get().then((lastDoc) {
-          query = query.startAfterDocument(lastDoc);
-          return query.get().then((querySnapshot) {
-            return querySnapshot.docs.map((doc) => DashboardReportModel.fromDocument(doc)).toList();
-          });
-        });
-      } else {
-        return query.get().then((querySnapshot) {
-          return querySnapshot.docs.map((doc) => DashboardReportModel.fromDocument(doc)).toList();
-        });
-      }
-    } catch (e) {
-      throw Exception(e.toString());
-    }
-  }
-
-  @override
-  Future<List<DashboardReportModel>> getReportsByUser({
-    required String userId,
-    required int limit,
-    String? lastDocumentId,
-  }) async {
-    try {
-      Query query = firestore.collection('reports').where('userId', isEqualTo: userId).orderBy('created_at', descending: true).limit(limit);
-      if (lastDocumentId != null) {
-        return firestore.collection('reports').doc(lastDocumentId).get().then((lastDoc) {
-          query = query.startAfterDocument(lastDoc);
-          return query.get().then((querySnapshot) {
-            return querySnapshot.docs.map((doc) => DashboardReportModel.fromDocument(doc)).toList();
-          });
-        });
-      } else {
-        return query.get().then((querySnapshot) {
-          return querySnapshot.docs.map((doc) => DashboardReportModel.fromDocument(doc)).toList();
-        });
       }
     } catch (e) {
       throw Exception(e.toString());

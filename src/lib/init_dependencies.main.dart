@@ -9,6 +9,7 @@ Future<void> initDependencies() async {
   _initReport();
   _initDashboard();
   _initUserManagement();
+  _initMap();
 }
 
 // Initialize Core Module
@@ -267,3 +268,35 @@ void _initUserManagement() {
     ),
   );
 }
+
+// Initialize Map Module
+void _initMap() {
+  // Data Sources
+  serviceLocator.registerFactory<MapRemoteDataSource>(
+    () => MapRemoteDataSourceImpl(
+      serviceLocator(),
+    ),
+  );
+
+  // Repositories
+  serviceLocator.registerFactory<MapRepository>(
+    () => MapRepositoryImpl(
+      serviceLocator(),
+    ),
+  );
+
+  // Use Cases
+  serviceLocator.registerFactory(
+    () => GetMapReportsUseCase(
+      serviceLocator(),
+    ),
+  );
+
+  // Providers
+  serviceLocator.registerLazySingleton(
+    () => MapProvider(
+      serviceLocator(),
+    ),
+  );
+}
+

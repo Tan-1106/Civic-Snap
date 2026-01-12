@@ -9,6 +9,7 @@ import 'package:src/features/report/presentation/providers/report_provider.dart'
 import 'package:src/features/dashboard/presentation/providers/dashboard_provider.dart';
 import 'package:src/features/user/presentation/providers/user_management_provider.dart';
 import 'package:src/features/authentication/presentation/providers/authentication_provider.dart';
+import 'package:src/features/map/presentation/providers/map_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => serviceLocator<DashboardProvider>()),
         ChangeNotifierProvider(create: (_) => serviceLocator<UserManagementProvider>()),
         ChangeNotifierProvider(create: (_) => serviceLocator<UserProfileProvider>()),
+        ChangeNotifierProvider(create: (_) => serviceLocator<MapProvider>()),
       ],
       child: const MyApp(),
     ),

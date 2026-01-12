@@ -53,4 +53,11 @@ import 'package:src/features/authentication/domain/usecases/clear_credentials.da
 import 'package:src/features/authentication/domain/usecases/get_route_for_role.dart';
 import 'package:src/features/authentication/presentation/providers/authentication_provider.dart';
 
+// Map feature imports
+import 'package:src/features/map/data/datasources/map_remote_data_source.dart';
+import 'package:src/features/map/data/repositories/map_repository_impl.dart';
+import 'package:src/features/map/domain/repositories/map_repository.dart';
+import 'package:src/features/map/domain/usecases/get_map_reports.dart';
+import 'package:src/features/map/presentation/providers/map_provider.dart';
+
 part 'init_dependencies.main.dart';

@@ -152,9 +152,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 10),
                 Text(
                   user.name,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),

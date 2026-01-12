@@ -156,7 +156,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     required String reportId,
   }) async {
     try {
-      final imageUrl = await firestore.collection('reports').doc(reportId).get().then((doc) => doc['imageUrl'] as String?);
+      final imageUrl = await firestore.collection('reports').doc(reportId).get().then((doc) => doc['image_url'] as String?);
       if (imageUrl != null && imageUrl.isNotEmpty) {
         final storageRef = storage.refFromURL(imageUrl);
         await storageRef.delete();

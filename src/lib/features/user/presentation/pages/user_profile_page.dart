@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:src/core/utils/format_date.dart';
 import 'package:src/core/common/widgets/loader.dart';
 import 'package:src/core/common/enums/report_status.dart';
-import 'package:src/core/utils/format_date.dart';
+import 'package:src/features/user/presentation/widgets/status_chip.dart';
 import 'package:src/features/user/presentation/providers/user_profile_provider.dart';
 import 'package:src/features/authentication/presentation/providers/authentication_provider.dart';
 
@@ -131,7 +132,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     DropdownButton<ReportStatus?>(
                       elevation: 4,
                       value: _currentFilterStatus,
-                      hint: const Text('Filter by status'),
                       items: [
                         const DropdownMenuItem<ReportStatus?>(
                           value: null,
@@ -195,8 +195,26 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         final report = provider.userReports[index];
                         return ListTile(
                           contentPadding: const EdgeInsets.all(0.0),
-                          title: Text(report.title),
-                          subtitle: Text('Status: ${report.status}'),
+                          title: Text(
+                            report.title,
+                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 10.0,
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Status: ',
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                StatusChip(status: report.status),
+                              ],
+                            ),
+                          ),
                           trailing: Text(
                             formatDate(report.createdAt),
                             style: Theme.of(context).textTheme.bodySmall,

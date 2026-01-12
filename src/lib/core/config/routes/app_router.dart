@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:src/core/common/layouts/user_shell_layout.dart';
 import 'package:src/core/common/layouts/admin_shell_layout.dart';
+import 'package:src/core/common/entities/base_report_entity.dart';
 import 'package:src/features/map/presentation/pages/map_screen.dart';
 import 'package:src/features/report/presentation/pages/send_report_page.dart';
 import 'package:src/features/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:src/features/user/presentation/pages/user_management_page.dart';
 import 'package:src/features/authentication/presentation/pages/sign_in_page.dart';
 import 'package:src/features/authentication/presentation/pages/sign_up_page.dart';
 import 'package:src/features/dashboard/presentation/pages/report_details_page.dart';
-import 'package:src/features/dashboard/domain/entities/dashboard_report_entity.dart';
 import 'package:src/features/authentication/presentation/pages/forgot_password_page.dart';
 
 // GoRouter Navigator Keys
@@ -54,7 +55,7 @@ final GoRouter appRouter = GoRouter(
           name: 'adminReportDetails',
           path: '/admin-report-details',
           builder: (context, state) {
-            final report = state.extra as DashboardReportEntity;
+            final report = state.extra as BaseReportEntity;
             return ReportDetailsPage(report: report);
           },
         ),
@@ -66,7 +67,7 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           name: 'adminUserManagement',
           path: '/admin-user-management',
-          builder: (context, state) => const Scaffold(body: Center(child: Text('User Management'))),
+          builder: (context, state) => const UserManagementPage(),
         ),
       ],
     ),

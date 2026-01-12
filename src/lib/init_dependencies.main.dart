@@ -8,6 +8,7 @@ Future<void> initDependencies() async {
   _initAuthentication();
   _initReport();
   _initDashboard();
+  _initUserManagement();
 }
 
 // Initialize Core Module
@@ -188,6 +189,44 @@ void _initDashboard() {
   // Providers
   serviceLocator.registerLazySingleton(
     () => DashboardProvider(
+      serviceLocator(),
+      serviceLocator(),
+    ),
+  );
+}
+
+// Initialize User Management Module
+void _initUserManagement() {
+  // Data Sources
+  serviceLocator.registerFactory<UserManagementRemoteDataSource>(
+    () => UserManagementRemoteDataSourceImpl(
+      serviceLocator(),
+    ),
+  );
+
+  // Repositories
+  serviceLocator.registerFactory<UserManagementRepository>(
+    () => UserManagementRepositoryImpl(
+      serviceLocator(),
+    ),
+  );
+
+  // Use Cases
+  serviceLocator.registerFactory(
+    () => GetUsersUseCase(
+      serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+    () => GetUserReportsUseCase(
+      serviceLocator(),
+    ),
+  );
+
+  // Providers
+  serviceLocator.registerLazySingleton(
+    () => UserManagementProvider(
       serviceLocator(),
       serviceLocator(),
     ),

@@ -1,6 +1,6 @@
 import 'package:src/core/common/entities/base_report_entity.dart';
 
-class DashboardReportEntity {
+class UserReportEntity {
   final String id;
   final String userId;
   final String title;
@@ -12,7 +12,7 @@ class DashboardReportEntity {
   final String? response;
   final DateTime? respondedAt;
 
-  const DashboardReportEntity({
+  const UserReportEntity({
     required this.id,
     required this.userId,
     required this.title,
@@ -21,28 +21,11 @@ class DashboardReportEntity {
     required this.createdAt,
     required this.status,
     required this.location,
-    required this.response,
-    required this.respondedAt,
+    this.response,
+    this.respondedAt,
   });
 
-  factory DashboardReportEntity.fromBaseReport(BaseReportEntity base) {
-    return DashboardReportEntity(
-      id: base.id,
-      userId: base.userId,
-      title: base.title,
-      description: base.description,
-      imageUrl: base.imageUrl,
-      createdAt: base.createdAt,
-      status: base.status,
-      location: Location(
-        latitude: base.location.latitude,
-        longitude: base.location.longitude,
-      ),
-      response: base.response,
-      respondedAt: base.respondedAt,
-    );
-  }
-
+  /// Convert to BaseReportEntity for navigation/sharing between features
   BaseReportEntity toBaseReport() {
     return BaseReportEntity(
       id: id,

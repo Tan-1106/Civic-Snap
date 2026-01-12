@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:src/features/user/presentation/providers/user_management_provider.dart';
 import 'package:src/init_dependencies.dart';
 import 'package:src/core/utils/create_theme.dart';
 import 'package:src/core/config/theme/theme.dart';
@@ -17,6 +18,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => serviceLocator<AuthenticationProvider>()),
         ChangeNotifierProvider(create: (_) => serviceLocator<ReportProvider>()),
         ChangeNotifierProvider(create: (_) => serviceLocator<DashboardProvider>()),
+        ChangeNotifierProvider(create: (_) => serviceLocator<UserManagementProvider>()),
       ],
       child: const MyApp(),
     ),

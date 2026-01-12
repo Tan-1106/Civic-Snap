@@ -4,11 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:src/core/utils/show_snackbar.dart';
 import 'package:src/core/common/enums/report_status.dart';
 import 'package:src/core/common/widgets/primary_button.dart';
-import 'package:src/features/dashboard/domain/entities/dashboard_report_entity.dart';
+import 'package:src/core/common/entities/base_report_entity.dart';
 import 'package:src/features/dashboard/presentation/providers/dashboard_provider.dart';
 
 class ReportDetailsPage extends StatefulWidget {
-  final DashboardReportEntity report;
+  final BaseReportEntity report;
 
   const ReportDetailsPage({super.key, required this.report});
 

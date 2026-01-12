@@ -9,7 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  logger: ^2.6.2
   fpdart: ^1.2.0
   get_it: ^9.2.0
   equatable: ^2.0.8

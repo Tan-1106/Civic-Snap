@@ -242,7 +242,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           onSeeMore: () {
                             context.push(
                               '/admin-report-details',
-                              extra: report,
+                              extra: report.toBaseReport(),
                             );
                           },
                         );

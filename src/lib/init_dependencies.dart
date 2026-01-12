@@ -11,6 +11,7 @@ import 'package:src/features/user/domain/usecases/get_user_profile.dart';
 import 'package:src/features/user/domain/usecases/get_user_reports.dart';
 import 'package:src/features/user/domain/usecases/get_users.dart';
 import 'package:src/features/user/domain/usecases/update_report_basic_information.dart';
+import 'package:src/features/user/domain/usecases/update_profile_image.dart';
 import 'package:src/features/user/domain/usecases/delete_report.dart';
 import 'package:src/features/user/presentation/providers/user_management_provider.dart';
 import 'package:src/features/user/presentation/providers/user_profile_provider.dart';

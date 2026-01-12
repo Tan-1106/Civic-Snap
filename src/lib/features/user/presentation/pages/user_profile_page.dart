@@ -1,9 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:src/core/utils/format_date.dart';
 import 'package:src/core/common/widgets/loader.dart';
 import 'package:src/core/common/enums/report_status.dart';
+import 'package:src/core/utils/show_snackbar.dart';
 import 'package:src/features/user/presentation/widgets/status_chip.dart';
 import 'package:src/features/user/presentation/providers/user_profile_provider.dart';
 import 'package:src/features/authentication/presentation/providers/authentication_provider.dart';
@@ -18,6 +21,26 @@ class UserProfilePage extends StatefulWidget {
 class _UserProfilePageState extends State<UserProfilePage> {
   final ScrollController _scrollController = ScrollController();
   ReportStatus? _currentFilterStatus;
+
+  Future<void> _chooseImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null && mounted) {
+      final imageFile = File(pickedFile.path);
+      final userProfileProvider = context.read<UserProfileProvider>();
+      await userProfileProvider.updateProfileImage(imageFile);
+
+      if (userProfileProvider.errorMessage == null) {
+        if (mounted) {
+          showSuccessSnackBar(context, 'Profile image updated successfully.');
+        }
+      } else {
+        if (mounted) {
+          showErrorSnackBar(context, userProfileProvider.errorMessage!);
+        }
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -91,27 +114,44 @@ class _UserProfilePageState extends State<UserProfilePage> {
             final user = provider.userProfile!;
             return Column(
               children: [
-                if (user.profileImageUrl != null) ...[
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(user.profileImageUrl!),
-                  ),
-                  const SizedBox(height: 20),
-                ] else ...[
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    child: Text(
-                      user.name.isNotEmpty ? user.name[0].toUpperCase() : '',
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        fontWeight: FontWeight.bold,
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    if (user.profileImageUrl != null)
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundImage: NetworkImage(user.profileImageUrl!),
+                      )
+                    else
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        child: Text(
+                          user.name.isNotEmpty ? user.name[0].toUpperCase() : '',
+                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: InkWell(
+                        onTap: _chooseImageFromGallery,
+                        child: CircleAvatar(
+                          radius: 16,
+                          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                          child: Icon(
+                            Icons.edit,
+                            size: 18,
+                            color: Theme.of(context).colorScheme.onPrimaryContainer,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                ],
-
+                  ],
+                ),
                 Text(
                   user.name,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(

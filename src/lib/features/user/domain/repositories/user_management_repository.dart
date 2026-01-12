@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:fpdart/fpdart.dart';
 import 'package:src/core/error/failure.dart';
 import 'package:src/core/common/enums/report_status.dart';
@@ -28,5 +29,10 @@ abstract interface class UserManagementRepository {
 
   Future<Either<Failure, bool>> deleteReport({
     required String reportId,
+  });
+
+  Future<Either<Failure, bool>> updateProfileImage({
+    required String userId,
+    required File image,
   });
 }

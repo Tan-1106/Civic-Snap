@@ -1,10 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:src/core/common/enums/report_status.dart';
 import 'package:src/features/user/domain/entities/user_entity.dart';
-import 'package:src/features/user/domain/entities/user_report_entity.dart';
 import 'package:src/features/user/domain/usecases/delete_report.dart';
 import 'package:src/features/user/domain/usecases/get_user_profile.dart';
 import 'package:src/features/user/domain/usecases/get_user_reports.dart';
+import 'package:src/features/user/domain/entities/user_report_entity.dart';
+import 'package:src/features/user/domain/usecases/update_profile_image.dart';
 import 'package:src/features/user/domain/usecases/update_report_basic_information.dart';
 
 class UserProfileProvider extends ChangeNotifier {
@@ -12,16 +14,19 @@ class UserProfileProvider extends ChangeNotifier {
   final GetUserReportsUseCase _getUserReportsUseCase;
   final UpdateReportBasicInformationUseCase _updateReportBasicInformationUseCase;
   final DeleteReportUseCase _deleteReportUseCase;
+  final UpdateProfileImageUseCase _updateProfileImageUseCase;
 
   UserProfileProvider(
     GetUserProfileUseCase getUserProfileUseCase,
     GetUserReportsUseCase getUserReportsUseCase,
     UpdateReportBasicInformationUseCase updateReportBasicInformationUseCase,
     DeleteReportUseCase deleteReportUseCase,
+    UpdateProfileImageUseCase updateProfileImageUseCase,
   ) : _getUserProfileUseCase = getUserProfileUseCase,
       _getUserReportsUseCase = getUserReportsUseCase,
       _updateReportBasicInformationUseCase = updateReportBasicInformationUseCase,
-      _deleteReportUseCase = deleteReportUseCase;
+      _deleteReportUseCase = deleteReportUseCase,
+      _updateProfileImageUseCase = updateProfileImageUseCase;
 
   // States
   String? _errorMessage;
@@ -35,6 +40,10 @@ class UserProfileProvider extends ChangeNotifier {
   bool _isLoadingProfile = false;
 
   bool get isLoadingProfile => _isLoadingProfile;
+
+  bool _isUpdatingProfileImage = false;
+
+  bool get isUpdatingProfileImage => _isUpdatingProfileImage;
 
   static const int _pageSize = 10;
 
@@ -69,6 +78,42 @@ class UserProfileProvider extends ChangeNotifier {
 
     _isLoadingProfile = false;
     notifyListeners();
+  }
+
+  // Update Profile Image
+  Future<bool> updateProfileImage(File image) async {
+    if (_userId == null) return false;
+
+    _isUpdatingProfileImage = true;
+    notifyListeners();
+
+    final result = await _updateProfileImageUseCase(
+      UpdateProfileImageParams(
+        userId: _userId!,
+        image: image,
+      ),
+    );
+
+    bool success = false;
+    result.fold(
+      (failure) {
+        _errorMessage = failure.message;
+      },
+      (_) {
+        _errorMessage = null;
+        success = true;
+      },
+    );
+
+    _isUpdatingProfileImage = false;
+    notifyListeners();
+
+    // Refresh profile to get new image URL
+    if (success) {
+      await fetchUserProfile();
+    }
+
+    return success;
   }
 
   // Get user reports

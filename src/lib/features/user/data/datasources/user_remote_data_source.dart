@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:src/core/common/enums/report_status.dart';
@@ -120,6 +119,17 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     required File image,
   }) async {
     try {
+      final userDoc = await firestore.collection('users').doc(userId).get();
+      if (userDoc.exists) {
+        final oldImageUrl = userDoc.data()?['profileImageUrl'] as String?;
+        if (oldImageUrl != null && oldImageUrl.isNotEmpty) {
+          try {
+            final oldStorageRef = storage.refFromURL(oldImageUrl);
+            await oldStorageRef.delete();
+          } catch (_) {}
+        }
+      }
+
       final storageRef = storage.ref().child('profile_images').child('$userId.jpg');
       final uploadTask = await storageRef.putFile(image);
       final downloadUrl = await uploadTask.ref.getDownloadURL();

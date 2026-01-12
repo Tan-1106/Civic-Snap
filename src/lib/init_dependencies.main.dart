@@ -243,6 +243,12 @@ void _initUserManagement() {
     ),
   );
 
+  serviceLocator.registerFactory(
+    () => UpdateProfileImageUseCase(
+      serviceLocator(),
+    ),
+  );
+
   // Providers
   serviceLocator.registerLazySingleton(
     () => UserManagementProvider(
@@ -253,6 +259,7 @@ void _initUserManagement() {
 
   serviceLocator.registerLazySingleton(
     () => UserProfileProvider(
+      serviceLocator(),
       serviceLocator(),
       serviceLocator(),
       serviceLocator(),

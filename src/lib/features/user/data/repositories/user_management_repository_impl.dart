@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:fpdart/fpdart.dart';
 import 'package:src/core/error/failure.dart';
 import 'package:src/core/common/enums/report_status.dart';
@@ -85,6 +86,22 @@ class UserManagementRepositoryImpl implements UserManagementRepository {
   }) async {
     try {
       final result = await remoteDataSource.deleteReport(reportId: reportId);
+      return right(result);
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> updateProfileImage({
+    required String userId,
+    required File image,
+  }) async {
+    try {
+      final result = await remoteDataSource.uploadProfileImage(
+        userId: userId,
+        image: image,
+      );
       return right(result);
     } catch (e) {
       return left(Failure(e.toString()));

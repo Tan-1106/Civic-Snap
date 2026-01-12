@@ -198,8 +198,9 @@ void _initDashboard() {
 // Initialize User Management Module
 void _initUserManagement() {
   // Data Sources
-  serviceLocator.registerFactory<UserManagementRemoteDataSource>(
-    () => UserManagementRemoteDataSourceImpl(
+  serviceLocator.registerFactory<UserRemoteDataSource>(
+    () => UserRemoteDataSourceImpl(
+      serviceLocator(),
       serviceLocator(),
     ),
   );
@@ -224,9 +225,36 @@ void _initUserManagement() {
     ),
   );
 
+  serviceLocator.registerFactory(
+    () => GetUserProfileUseCase(
+      serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+    () => UpdateReportBasicInformationUseCase(
+      serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+    () => DeleteReportUseCase(
+      serviceLocator(),
+    ),
+  );
+
   // Providers
   serviceLocator.registerLazySingleton(
     () => UserManagementProvider(
+      serviceLocator(),
+      serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerLazySingleton(
+    () => UserProfileProvider(
+      serviceLocator(),
+      serviceLocator(),
       serviceLocator(),
       serviceLocator(),
     ),

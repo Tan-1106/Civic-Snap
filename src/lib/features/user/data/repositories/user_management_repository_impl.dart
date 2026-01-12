@@ -4,10 +4,10 @@ import 'package:src/core/common/enums/report_status.dart';
 import 'package:src/features/user/domain/entities/user_entity.dart';
 import 'package:src/features/user/domain/entities/user_report_entity.dart';
 import 'package:src/features/user/domain/repositories/user_management_repository.dart';
-import 'package:src/features/user/data/datasources/user_management_remote_data_source.dart';
+import 'package:src/features/user/data/datasources/user_remote_data_source.dart';
 
 class UserManagementRepositoryImpl implements UserManagementRepository {
-  UserManagementRemoteDataSource remoteDataSource;
+  UserRemoteDataSource remoteDataSource;
 
   UserManagementRepositoryImpl(
     this.remoteDataSource,
@@ -46,6 +46,46 @@ class UserManagementRepositoryImpl implements UserManagementRepository {
         lastReportId: lastReportId,
       );
       return right(reports.map((e) => e.toEntity()).toList());
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> getUserProfile(String userId) async {
+    try {
+      final user = await remoteDataSource.getUserProfile(userId);
+      return right(user.toEntity());
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> updateReportBasicInformation({
+    required String reportId,
+    String? title,
+    String? description,
+  }) async {
+    try {
+      final result = await remoteDataSource.updateReportBasicInformation(
+        reportId: reportId,
+        title: title,
+        description: description,
+      );
+      return right(result);
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> deleteReport({
+    required String reportId,
+  }) async {
+    try {
+      final result = await remoteDataSource.deleteReport(reportId: reportId);
+      return right(result);
     } catch (e) {
       return left(Failure(e.toString()));
     }

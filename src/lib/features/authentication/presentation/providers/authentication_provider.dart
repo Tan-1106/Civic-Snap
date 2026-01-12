@@ -39,6 +39,8 @@ class AuthenticationProvider extends ChangeNotifier {
 
   UserEntity? get user => _user;
 
+  String get userId => _user?.id ?? '';
+
   String? _errorMessage;
 
   String? get errorMessage => _errorMessage;

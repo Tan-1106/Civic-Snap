@@ -17,4 +17,16 @@ abstract interface class UserManagementRepository {
     ReportStatus? status,
     String? lastReportId,
   });
+
+  Future<Either<Failure, UserEntity>> getUserProfile(String userId);
+
+  Future<Either<Failure, bool>> updateReportBasicInformation({
+    required String reportId,
+    String? title,
+    String? description,
+  });
+
+  Future<Either<Failure, bool>> deleteReport({
+    required String reportId,
+  });
 }

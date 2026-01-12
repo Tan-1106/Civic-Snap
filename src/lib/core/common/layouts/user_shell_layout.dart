@@ -15,6 +15,7 @@ class _UserShellLayoutState extends State<UserShellLayout> {
   int _calculateSelectedIndex(BuildContext context) {
     final String location = GoRouterState.of(context).uri.toString();
 
+    if (location.startsWith('/user-report-details')) return 2;
     if (location.startsWith('/user-report')) return 1;
     if (location.startsWith('/user-profile')) return 2;
     return 0;
@@ -37,9 +38,10 @@ class _UserShellLayoutState extends State<UserShellLayout> {
   String _getTitle(BuildContext context) {
     final String location = GoRouterState.of(context).uri.toString();
 
+    if (location.startsWith('/user-report-details')) return 'Report Details';
     if (location.startsWith('/user-report')) return 'Report';
-    if (location.startsWith('/user-profile')) return 'Your Profile';
     if (location.startsWith('/user-map')) return 'Map';
+    if (location.startsWith('/user-profile')) return 'Your Profile';
     return 'User Panel';
   }
 

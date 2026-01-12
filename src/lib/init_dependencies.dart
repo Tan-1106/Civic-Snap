@@ -4,12 +4,16 @@ import 'package:src/core/network/connection_checker.dart';
 import 'package:src/core/services/secure_storage_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:src/features/user/data/datasources/user_management_remote_data_source.dart';
+import 'package:src/features/user/data/datasources/user_remote_data_source.dart';
 import 'package:src/features/user/data/repositories/user_management_repository_impl.dart';
 import 'package:src/features/user/domain/repositories/user_management_repository.dart';
+import 'package:src/features/user/domain/usecases/get_user_profile.dart';
 import 'package:src/features/user/domain/usecases/get_user_reports.dart';
 import 'package:src/features/user/domain/usecases/get_users.dart';
+import 'package:src/features/user/domain/usecases/update_report_basic_information.dart';
+import 'package:src/features/user/domain/usecases/delete_report.dart';
 import 'package:src/features/user/presentation/providers/user_management_provider.dart';
+import 'package:src/features/user/presentation/providers/user_profile_provider.dart';
 
 // Firebase imports
 import 'firebase_options.dart';

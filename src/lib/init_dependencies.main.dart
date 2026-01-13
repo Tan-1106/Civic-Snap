@@ -10,7 +10,11 @@ Future<void> initDependencies() async {
   _initDashboard();
   _initUserManagement();
   _initMap();
+  _initNotifications();
 }
+
+// Navigator Key
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // Initialize Core Module
 Future<void> _initCore() async {
@@ -19,9 +23,12 @@ Future<void> _initCore() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  serviceLocator.registerLazySingleton(() => navigatorKey);
   serviceLocator.registerLazySingleton(() => FirebaseAuth.instance);
   serviceLocator.registerLazySingleton(() => FirebaseStorage.instance);
   serviceLocator.registerLazySingleton(() => FirebaseFirestore.instance);
+  serviceLocator.registerLazySingleton(() => FirebaseMessaging.instance);
+  serviceLocator.registerLazySingleton(() => FlutterLocalNotificationsPlugin());
 
   // Internet Connection Checker
   serviceLocator.registerFactory(() => InternetConnection());
@@ -300,3 +307,15 @@ void _initMap() {
   );
 }
 
+// Initialize Notifications Module
+void _initNotifications() {
+  serviceLocator.registerLazySingleton<NotificationService>(
+      () => NotificationService(
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+      ),
+  );
+}

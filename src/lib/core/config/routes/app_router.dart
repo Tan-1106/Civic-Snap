@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:src/init_dependencies.dart';
 import 'package:src/core/common/layouts/user_shell_layout.dart';
 import 'package:src/core/common/layouts/admin_shell_layout.dart';
 import 'package:src/core/common/entities/base_report_entity.dart';
 import 'package:src/features/map/presentation/pages/map_screen.dart';
+import 'package:src/features/user/domain/entities/user_report_entity.dart';
+import 'package:src/features/user/presentation/pages/user_profile_page.dart';
 import 'package:src/features/report/presentation/pages/send_report_page.dart';
 import 'package:src/features/dashboard/presentation/pages/dashboard_page.dart';
-import 'package:src/features/user/domain/entities/user_report_entity.dart';
 import 'package:src/features/user/presentation/pages/user_management_page.dart';
 import 'package:src/features/authentication/presentation/pages/sign_in_page.dart';
 import 'package:src/features/authentication/presentation/pages/sign_up_page.dart';
 import 'package:src/features/dashboard/presentation/pages/report_details_page.dart';
-import 'package:src/features/authentication/presentation/pages/forgot_password_page.dart';
-import 'package:src/features/user/presentation/pages/user_profile_page.dart';
 import 'package:src/features/user/presentation/pages/user_report_details_page.dart';
+import 'package:src/features/authentication/presentation/pages/forgot_password_page.dart';
 
 // GoRouter Navigator Keys
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _adminShellNavigatorKey = GlobalKey<NavigatorState>();
 final _userShellNavigatorKey = GlobalKey<NavigatorState>();
 
 // App Router
 final GoRouter appRouter = GoRouter(
   initialLocation: '/sign-in',
-  navigatorKey: _rootNavigatorKey,
+  navigatorKey: serviceLocator<GlobalKey<NavigatorState>>(),
   routes: <RouteBase>[
     // Public Routes
     GoRoute(

@@ -1,6 +1,10 @@
 // Dependency Injection Setup using GetIt
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:src/core/network/connection_checker.dart';
+import 'package:src/core/network/notification_service.dart';
 import 'package:src/core/services/secure_storage_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';

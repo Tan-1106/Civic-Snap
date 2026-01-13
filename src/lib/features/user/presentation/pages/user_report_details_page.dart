@@ -206,6 +206,17 @@ class _UserReportDetailsPageState extends State<UserReportDetailsPage> {
                   '${widget.report.location.latitude} : ${widget.report.location.longitude}',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
+                const SizedBox(height: 20),
+                Text(
+                  'Response:',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  widget.report.response ?? 'No response yet.',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
                 const SizedBox(height: 30),
                 if (widget.report.status == ReportStatus.pending.displayName)
                   PrimaryButton(

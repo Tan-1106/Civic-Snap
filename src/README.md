@@ -12,6 +12,9 @@ Civic-Snap được xây dựng nhằm tạo ra một kênh giao tiếp hiệu q
 
 Với giao diện thân thiện và dễ sử dụng, người dân có thể nhanh chóng chụp ảnh, định vị vị trí và gửi báo cáo chỉ trong vài bước đơn giản.
 
+## Video Demo
+https://drive.google.com/file/d/1vbz5rSqHRiU4kp4O7G0pYDoCmnZP3Hm3/view?usp=sharing
+
 ## ✨ Các tính năng chính
 
 ### 1. 🔐 Xác thực người dùng

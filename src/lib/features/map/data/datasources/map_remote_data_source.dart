@@ -22,7 +22,7 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
     Query query = firestore.collection('reports').orderBy('created_at', descending: true).limit(limit);
 
     if (status != null) {
-      query = query.where('status', isEqualTo: status.name);
+      query = query.where('status', isEqualTo: status.displayName);
     }
 
     return query.snapshots().map((snapshot) {

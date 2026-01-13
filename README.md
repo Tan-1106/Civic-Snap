@@ -225,6 +225,5 @@ flutter build apk --release
 
 - **Email**: tanlxag116@gmail.com
 - **Phone**: 0918356643
-- **Project Link**: [https://github.com/Tan-1106/University-QA-System](https://github.com/Tan-1106/University-QA-System)
 
 ---

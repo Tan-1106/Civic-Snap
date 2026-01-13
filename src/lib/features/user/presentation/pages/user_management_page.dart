@@ -90,18 +90,6 @@ class _UserManagementPageState extends State<UserManagementPage> {
       );
     }
 
-    if (provider.userReports.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Text(
-          'No reports found for this user',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontStyle: FontStyle.italic,
-          ),
-        ),
-      );
-    }
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Column(
@@ -222,6 +210,16 @@ class _UserManagementPageState extends State<UserManagementPage> {
               );
             },
           ),
+          if (provider.userReports.isEmpty)
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'No reports found for this user',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
           // Load more button
           if (provider.hasMoreReports && !provider.isLoadingMoreReports)
             Center(

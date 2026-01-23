@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:src/core/error/failure.dart';
-import 'package:src/features/authentication/domain/entities/user_entity.dart';
+import 'package:src/features/authentication/domain/entities/user.dart';
 import 'package:src/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:src/features/authentication/data/datasources/auth_remote_data_source.dart';
 import 'package:src/features/authentication/data/datasources/auth_local_data_source.dart';
@@ -14,6 +14,7 @@ class AuthRepositoryImpl implements AuthRepository {
     this.localDataSource,
   );
 
+  // Sign up with email and password
   @override
   Future<Either<Failure, UserEntity>> signUpWithEmail({
     required String name,
@@ -32,6 +33,7 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  // Sign in with email and password
   @override
   Future<Either<Failure, UserEntity>> signInWithEmail({
     required String email,
@@ -48,6 +50,7 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  // Forgot password
   @override
   Future<Either<Failure, void>> forgotPassword({
     required String email,
@@ -62,6 +65,7 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  // Save credentials locally
   @override
   Future<Either<Failure, void>> saveCredentials({
     required String email,
@@ -78,6 +82,7 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  // Get saved credentials
   @override
   Future<Either<Failure, Map<String, String?>>> getSavedCredentials() async {
     try {
@@ -88,6 +93,7 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  // Clear saved credentials
   @override
   Future<Either<Failure, void>> clearSavedCredentials() async {
     try {

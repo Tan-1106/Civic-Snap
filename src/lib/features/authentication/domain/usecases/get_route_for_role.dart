@@ -2,7 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:src/core/error/failure.dart';
 import 'package:src/core/utils/usecase.dart';
 import 'package:src/core/common/enums/user_role.dart';
-import 'package:src/features/authentication/domain/entities/user_entity.dart';
+import 'package:src/features/authentication/domain/entities/user.dart';
 
 class GetRouteForRoleUseCase implements UseCase<String, GetRouteForRoleParams> {
   @override

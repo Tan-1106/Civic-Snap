@@ -63,11 +63,12 @@ class _SignUpPageState extends State<SignUpPage> {
               children: [
                 Text(
                   'Civic Snap',
-                  style: Theme.of(context).textTheme.headlineLarge,
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
                 Text(
-                  'Sign Up for an Account',
+                  'Join us today! \nCreate your account to get started',
                   style: Theme.of(context).textTheme.titleLarge,
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(
                   height: 20,

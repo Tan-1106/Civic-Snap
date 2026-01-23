@@ -1,3 +1,4 @@
+// Represents the base entity for a report in the system
 class BaseReportEntity {
   final String id;
   final String userId;
@@ -22,8 +23,14 @@ class BaseReportEntity {
     this.response,
     this.respondedAt,
   });
+
+  @override
+  String toString() {
+    return 'BaseReportEntity(id: $id, userId: $userId, title: $title, description: $description, imageUrl: $imageUrl, createdAt: $createdAt, status: $status, location: $location, response: $response, respondedAt: $respondedAt)';
+  }
 }
 
+// Represents the geographical location of a report
 class ReportLocation {
   final double latitude;
   final double longitude;
@@ -32,5 +39,10 @@ class ReportLocation {
     required this.latitude,
     required this.longitude,
   });
+
+  @override
+  String toString() {
+    return 'ReportLocation(latitude: $latitude, longitude: $longitude)';
+  }
 }
 

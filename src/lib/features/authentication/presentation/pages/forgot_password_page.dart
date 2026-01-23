@@ -51,7 +51,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               children: [
                 Text(
                   'Civic Snap',
-                  style: Theme.of(context).textTheme.headlineLarge,
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
                 Text(
                   'Reset Your Password',

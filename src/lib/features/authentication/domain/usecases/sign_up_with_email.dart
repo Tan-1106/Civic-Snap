@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:src/core/error/failure.dart';
 import 'package:src/core/utils/usecase.dart';
-import 'package:src/features/authentication/domain/entities/user_entity.dart';
+import 'package:src/features/authentication/domain/entities/user.dart';
 import 'package:src/features/authentication/domain/repositories/auth_repository.dart';
 
 class SignUpWithEmailUseCase implements UseCase<UserEntity, SignUpWithEmailParams> {

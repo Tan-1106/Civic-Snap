@@ -1,19 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:src/features/authentication/data/models/user_model.dart';
+import 'package:src/features/authentication/data/models/user.dart';
 
 abstract interface class AuthRemoteDataSource {
+  // Sign up with email and password
   Future<UserModel> signUpWithEmail({
     required String name,
     required String email,
     required String password,
   });
 
+  // Sign in with email and password
   Future<UserModel> signInWithEmail({
     required String email,
     required String password,
   });
 
+  // Forgot password
   Future<void> forgotPassword({
     required String email,
   });
@@ -25,6 +28,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   AuthRemoteDataSourceImpl(this.firebaseAuth, this.firestore);
 
+  // Sign up with email and password
   @override
   Future<UserModel> signUpWithEmail({
     required String name,
@@ -53,6 +57,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
   }
 
+  // Sign in with email and password
   @override
   Future<UserModel> signInWithEmail({
     required String email,
@@ -74,6 +79,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
   }
 
+  // Forgot password
   @override
   Future<void> forgotPassword({
     required String email,

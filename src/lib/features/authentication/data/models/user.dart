@@ -1,4 +1,4 @@
-import 'package:src/features/authentication/domain/entities/user_entity.dart';
+import 'package:src/features/authentication/domain/entities/user.dart';
 
 class UserModel {
   final String id;

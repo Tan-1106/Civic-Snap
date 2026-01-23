@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:src/core/utils/usecase.dart';
-import 'package:src/features/authentication/domain/entities/user_entity.dart';
+import 'package:src/features/authentication/domain/entities/user.dart';
 import 'package:src/features/authentication/domain/usecases/forgot_password.dart';
 import 'package:src/features/authentication/domain/usecases/save_credentials.dart';
 import 'package:src/features/authentication/domain/usecases/clear_credentials.dart';
@@ -10,53 +10,51 @@ import 'package:src/features/authentication/domain/usecases/get_route_for_role.d
 import 'package:src/features/authentication/domain/usecases/get_saved_credentials.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
-  final SignUpWithEmailUseCase _signUpWithEmailUseCase;
-  final SignInWithEmailUseCase _signInWithEmailUseCase;
-  final ForgotPasswordUseCase _forgotPasswordUseCase;
-  final SaveCredentialsUseCase _saveCredentialsUseCase;
-  final GetSavedCredentialsUseCase _getSavedCredentialsUseCase;
-  final ClearCredentialsUseCase _clearCredentialsUseCase;
-  final GetRouteForRoleUseCase _getRouteForRoleUseCase;
+  final SignUpWithEmailUseCase _signUpWithEmail;
+  final SignInWithEmailUseCase _signInWithEmail;
+  final ForgotPasswordUseCase _forgotPassword;
+  final SaveCredentialsUseCase _saveCredentials;
+  final GetSavedCredentialsUseCase _getSavedCredentials;
+  final ClearCredentialsUseCase _clearCredentials;
+  final GetRouteForRoleUseCase _getRouteForRole;
 
   AuthenticationProvider(
-    SignUpWithEmailUseCase signUpWithEmailUseCase,
-    SignInWithEmailUseCase signInWithEmailUseCase,
-    ForgotPasswordUseCase forgotPasswordUseCase,
-    SaveCredentialsUseCase saveCredentialsUseCase,
-    GetSavedCredentialsUseCase getSavedCredentialsUseCase,
-    ClearCredentialsUseCase clearCredentialsUseCase,
-    GetRouteForRoleUseCase getRouteForRoleUseCase,
-  ) : _signUpWithEmailUseCase = signUpWithEmailUseCase,
-      _signInWithEmailUseCase = signInWithEmailUseCase,
-      _forgotPasswordUseCase = forgotPasswordUseCase,
-      _saveCredentialsUseCase = saveCredentialsUseCase,
-      _getSavedCredentialsUseCase = getSavedCredentialsUseCase,
-      _clearCredentialsUseCase = clearCredentialsUseCase,
-      _getRouteForRoleUseCase = getRouteForRoleUseCase;
+    SignUpWithEmailUseCase signUpWithEmail,
+    SignInWithEmailUseCase signInWithEmail,
+    ForgotPasswordUseCase forgotPassword,
+    SaveCredentialsUseCase saveCredentials,
+    GetSavedCredentialsUseCase getSavedCredentials,
+    ClearCredentialsUseCase clearCredentials,
+    GetRouteForRoleUseCase getRouteForRole,
+  ) : _signUpWithEmail = signUpWithEmail,
+      _signInWithEmail = signInWithEmail,
+      _forgotPassword = forgotPassword,
+      _saveCredentials = saveCredentials,
+      _getSavedCredentials = getSavedCredentials,
+      _clearCredentials = clearCredentials,
+      _getRouteForRole = getRouteForRole;
 
-  // States
+  // State variables
   UserEntity? _user;
+  bool _isLoading = false;
+  String? _errorMessage;
+  String? _redirectRoute;
+  Map<String, String?>? _savedCredentials;
 
+  // Getters
   UserEntity? get user => _user;
 
   String get userId => _user?.id ?? '';
 
-  String? _errorMessage;
+  bool get isLoading => _isLoading;
 
   String? get errorMessage => _errorMessage;
 
-  bool _isLoading = false;
-
-  bool get isLoading => _isLoading;
-
-  String? _redirectRoute;
-
   String? get redirectRoute => _redirectRoute;
-
-  Map<String, String?>? _savedCredentials;
 
   Map<String, String?>? get savedCredentials => _savedCredentials;
 
+  // Authentication Methods
   // Sign Up with Email
   Future<void> signUpWithEmail({
     required String name,
@@ -66,7 +64,7 @@ class AuthenticationProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    final result = await _signUpWithEmailUseCase(
+    final result = await _signUpWithEmail(
       SignUpWithEmailParams(
         name: name,
         email: email,
@@ -97,7 +95,7 @@ class AuthenticationProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    final result = await _signInWithEmailUseCase(
+    final result = await _signInWithEmail(
       SignInWithEmailParams(
         email: email,
         password: password,
@@ -113,7 +111,10 @@ class AuthenticationProvider extends ChangeNotifier {
         _errorMessage = null;
 
         if (rememberMe) {
-          await saveCredentials(email: email, password: password);
+          await saveCredentials(
+            email: email,
+            password: password,
+          );
         }
       },
     );
@@ -129,7 +130,7 @@ class AuthenticationProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    final result = await _forgotPasswordUseCase(
+    final result = await _forgotPassword(
       ForgotPasswordParams(
         email: email,
       ),
@@ -152,7 +153,7 @@ class AuthenticationProvider extends ChangeNotifier {
     required String email,
     required String password,
   }) async {
-    final result = await _saveCredentialsUseCase(
+    final result = await _saveCredentials(
       SaveCredentialsParams(
         email: email,
         password: password,
@@ -174,7 +175,7 @@ class AuthenticationProvider extends ChangeNotifier {
 
   // Load saved credentials
   Future<void> loadSavedCredentials() async {
-    final result = await _getSavedCredentialsUseCase(NoParams());
+    final result = await _getSavedCredentials(NoParams());
 
     result.fold(
       (failure) {
@@ -191,7 +192,7 @@ class AuthenticationProvider extends ChangeNotifier {
 
   // Clear saved credentials
   Future<void> clearCredentials() async {
-    final result = await _clearCredentialsUseCase(NoParams());
+    final result = await _clearCredentials(NoParams());
 
     result.fold(
       (failure) {
@@ -211,7 +212,7 @@ class AuthenticationProvider extends ChangeNotifier {
       return null;
     }
 
-    final result = await _getRouteForRoleUseCase(
+    final result = await _getRouteForRole(
       GetRouteForRoleParams(user: _user!),
     );
 

@@ -95,10 +95,10 @@ class _SignInPageState extends State<SignInPage> {
               children: [
                 Text(
                   'Civic Snap',
-                  style: Theme.of(context).textTheme.headlineLarge,
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
                 Text(
-                  'Snap to Fix, Act to Build.',
+                  'Snap to Fix, Act to Build',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(

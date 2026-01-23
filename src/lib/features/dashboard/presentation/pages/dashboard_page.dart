@@ -17,26 +17,7 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   final ScrollController _scrollController = ScrollController();
   final _userIdController = TextEditingController();
-
   ReportStatus? _currentFilterStatus;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_onScroll);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final DashboardProvider dashboardProvider = context.read<DashboardProvider>();
-      dashboardProvider.getReports(refresh: true);
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_onScroll);
-    _scrollController.dispose();
-    _userIdController.dispose();
-    super.dispose();
-  }
 
   void _onScroll() {
     if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent * 0.8) {
@@ -77,6 +58,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    const Divider(),
                     const SizedBox(height: 20),
                     Text(
                       'Status:',
@@ -136,10 +118,9 @@ class _DashboardPageState extends State<DashboardPage> {
                           child: const Icon(Icons.clear),
                           onTap: () {
                             _userIdController.clear();
-                          }
-                        )
+                          },
+                        ),
                       ),
-
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
@@ -168,6 +149,26 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final DashboardProvider dashboardProvider = context.read<DashboardProvider>();
+      dashboardProvider.getReports(
+        refresh: true,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    _userIdController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -175,37 +176,41 @@ class _DashboardPageState extends State<DashboardPage> {
         child: Consumer<DashboardProvider>(
           builder: (context, provider, child) {
             if (provider.isLoading && provider.reports.isEmpty) {
-              return const Center(child: Loader());
-            }
-
-            if (provider.errorMessage != null && provider.reports.isEmpty) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Can\'t load reports, please try again or come back later.',
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        fontStyle: FontStyle.italic,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () => provider.getReports(refresh: true),
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                ),
+              return const Center(
+                child: Loader(),
               );
             }
 
             if (provider.reports.isEmpty) {
-              return Center(
-                child: Text(
-                  'No reports found',
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontStyle: FontStyle.italic,
+              return RefreshIndicator(
+                onRefresh: () => provider.getReports(refresh: true),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (provider.errorMessage == null) ...[
+                        Text(
+                          'No reports found',
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                      if (provider.errorMessage != null) ...[
+                        Text(
+                          'Can\'t load reports, please try again or come back later.',
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            fontStyle: FontStyle.italic,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () => provider.getReports(refresh: true),
+                          child: const Text('Retry'),
+                        ),
+                      ],
+                    ],
                   ),
                 ),
               );
@@ -215,7 +220,6 @@ class _DashboardPageState extends State<DashboardPage> {
               onRefresh: () => provider.getReports(refresh: true),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 20,
                 children: [
                   Text(
                     'List of Reports:',
@@ -223,6 +227,8 @@ class _DashboardPageState extends State<DashboardPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  const Divider(),
+                  const SizedBox(height: 20),
                   Expanded(
                     child: ListView.builder(
                       controller: _scrollController,

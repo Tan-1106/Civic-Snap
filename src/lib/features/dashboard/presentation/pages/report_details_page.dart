@@ -70,38 +70,16 @@ class _ReportDetailsPageState extends State<ReportDetailsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                spacing: 10,
-                children: [
-                  Text(
-                    'User ID:',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(widget.report.userId),
-                ],
-              ),
-              const SizedBox(height: 20),
               Text(
-                'Title:',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                widget.report.title,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      widget.report.title,
-                    ),
-                  ),
-                ],
               ),
               const SizedBox(height: 20),
               Text(
                 'Description:',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -117,7 +95,7 @@ class _ReportDetailsPageState extends State<ReportDetailsPage> {
               const SizedBox(height: 20),
               Text(
                 'Attached Image:',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -148,7 +126,7 @@ class _ReportDetailsPageState extends State<ReportDetailsPage> {
               const SizedBox(height: 20),
               Text(
                 'Status:',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -180,7 +158,7 @@ class _ReportDetailsPageState extends State<ReportDetailsPage> {
               const SizedBox(height: 20),
               Text(
                 'Response:',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),

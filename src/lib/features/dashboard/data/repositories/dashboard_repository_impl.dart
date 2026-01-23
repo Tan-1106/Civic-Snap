@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:src/core/error/failure.dart';
 import 'package:src/core/common/enums/report_status.dart';
-import 'package:src/features/dashboard/domain/entities/dashboard_report_entity.dart';
+import 'package:src/features/dashboard/domain/entities/dashboard_report.dart';
 import 'package:src/features/dashboard/domain/repositories/dashboard_repository.dart';
 import 'package:src/features/dashboard/data/datasources/dashboard_remote_data_source.dart';
 
@@ -12,6 +12,7 @@ class DashboardRepositoryImpl implements DashboardRepository {
     this.remoteDataSource,
   );
 
+  // Fetch reports with optional filters: status, userId, pagination
   @override
   Future<Either<Failure, List<DashboardReportEntity>>> getReports({
     required int limit,
@@ -32,8 +33,9 @@ class DashboardRepositoryImpl implements DashboardRepository {
     }
   }
 
+  // Respond to a report by updating its status and adding a response message
   @override
-  Future<Either<Failure, bool>> respondToReport({
+  Future<Either<Failure, void>> respondToReport({
     required String reportId,
     ReportStatus? newStatus,
     String? response,

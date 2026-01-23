@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:src/features/dashboard/domain/entities/dashboard_report_entity.dart';
+import 'package:src/features/dashboard/domain/entities/dashboard_report.dart';
 
 class DashboardReportModel {
   final String id;

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:src/core/common/enums/report_status.dart';
 import 'package:src/features/dashboard/domain/usecases/get_reports.dart';
 import 'package:src/features/dashboard/domain/usecases/respond_to_report.dart';
-import 'package:src/features/dashboard/domain/entities/dashboard_report_entity.dart';
+import 'package:src/features/dashboard/domain/entities/dashboard_report.dart';
 
 class DashboardProvider extends ChangeNotifier {
   final GetReportsUseCase _getReportsUseCase;

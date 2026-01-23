@@ -4,13 +4,13 @@ import 'package:src/core/utils/usecase.dart';
 import 'package:src/core/common/enums/report_status.dart';
 import 'package:src/features/dashboard/domain/repositories/dashboard_repository.dart';
 
-class RespondToReportUseCase implements UseCase<bool, RespondToReportParams> {
+class RespondToReportUseCase implements UseCase<void, RespondToReportParams> {
   final DashboardRepository dashboardRepository;
 
   RespondToReportUseCase(this.dashboardRepository);
 
   @override
-  Future<Either<Failure, bool>> call(RespondToReportParams params) {
+  Future<Either<Failure, void>> call(RespondToReportParams params) {
     return dashboardRepository.respondToReport(
       reportId: params.reportId,
       newStatus: params.newStatus,

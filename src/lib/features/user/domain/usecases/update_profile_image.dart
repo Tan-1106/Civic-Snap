@@ -4,13 +4,13 @@ import 'package:src/core/error/failure.dart';
 import 'package:src/core/utils/usecase.dart';
 import 'package:src/features/user/domain/repositories/user_management_repository.dart';
 
-class UpdateProfileImageUseCase implements UseCase<bool, UpdateProfileImageParams> {
+class UpdateProfileImageUseCase implements UseCase<void, UpdateProfileImageParams> {
   final UserManagementRepository repository;
 
   UpdateProfileImageUseCase(this.repository);
 
   @override
-  Future<Either<Failure, bool>> call(UpdateProfileImageParams params) {
+  Future<Either<Failure, void>> call(UpdateProfileImageParams params) {
     return repository.updateProfileImage(
       userId: params.userId,
       image: params.image,

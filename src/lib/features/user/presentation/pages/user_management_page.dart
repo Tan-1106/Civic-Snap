@@ -23,27 +23,6 @@ class _UserManagementPageState extends State<UserManagementPage> {
   late String userId;
   int? _expandedIndex;
 
-  @override
-  void initState() {
-    super.initState();
-    _usersScrollController.addListener(_onUsersScroll);
-    _userReportsScrollController.addListener(_onUserReportsScroll);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final UserManagementProvider userManagementProvider = context.read<UserManagementProvider>();
-      userManagementProvider.getUsers(refresh: true);
-    });
-  }
-
-  @override
-  void dispose() {
-    _usersScrollController.removeListener(_onUsersScroll);
-    _userReportsScrollController.removeListener(_onUserReportsScroll);
-    _usersScrollController.dispose();
-    _userReportsScrollController.dispose();
-    _keywordController.dispose();
-    super.dispose();
-  }
-
   void _onUsersScroll() {
     if (_usersScrollController.position.pixels >= _usersScrollController.position.maxScrollExtent * 0.8) {
       context.read<UserManagementProvider>().loadMoreUsers();
@@ -241,6 +220,27 @@ class _UserManagementPageState extends State<UserManagementPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _usersScrollController.addListener(_onUsersScroll);
+    _userReportsScrollController.addListener(_onUserReportsScroll);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final UserManagementProvider userManagementProvider = context.read<UserManagementProvider>();
+      userManagementProvider.getUsers(refresh: true);
+    });
+  }
+
+  @override
+  void dispose() {
+    _usersScrollController.removeListener(_onUsersScroll);
+    _userReportsScrollController.removeListener(_onUserReportsScroll);
+    _usersScrollController.dispose();
+    _userReportsScrollController.dispose();
+    _keywordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -248,27 +248,42 @@ class _UserManagementPageState extends State<UserManagementPage> {
         child: Consumer<UserManagementProvider>(
           builder: (context, provider, child) {
             if (provider.isLoading && provider.users.isEmpty) {
-              return const Center(child: Loader());
+              return const Center(
+                child: Loader(),
+              );
             }
 
-            if (provider.errorMessage != null && provider.users.isEmpty) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Can\'t load reports, please try again or come back later.',
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        fontStyle: FontStyle.italic,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () => provider.getUsers(refresh: true),
-                      child: const Text('Retry'),
-                    ),
-                  ],
+            if (provider.users.isEmpty) {
+              return RefreshIndicator(
+                onRefresh: () => provider.getUsers(refresh: true),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (provider.errorMessage == null) ...[
+                        Text(
+                          'No users found',
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                      if (provider.errorMessage != null) ...[
+                        Text(
+                          'Can\'t load users, please try again or come back later.',
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            fontStyle: FontStyle.italic,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () => provider.getUsers(refresh: true),
+                          child: const Text('Retry'),
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
               );
             }
@@ -277,7 +292,6 @@ class _UserManagementPageState extends State<UserManagementPage> {
               onRefresh: () => provider.getUsers(refresh: true),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 20,
                 children: [
                   Text(
                     'List of Users:',
@@ -285,6 +299,8 @@ class _UserManagementPageState extends State<UserManagementPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  const Divider(),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: _keywordController,
                     decoration: InputDecoration(
@@ -303,87 +319,78 @@ class _UserManagementPageState extends State<UserManagementPage> {
                       provider.getUsers(refresh: true);
                     },
                   ),
-                  if (provider.users.isEmpty)
-                    Center(
-                      child: Text(
-                        'No users found',
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    )
-                  else
-                    Expanded(
-                      child: ListView.builder(
-                        controller: _usersScrollController,
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        itemCount: provider.users.length,
-                        itemBuilder: (context, index) {
-                          final user = provider.users[index];
-                          return Column(
-                            children: [
-                              Card(
-                                elevation: 4,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
+                  const SizedBox(height: 20),
+                  Expanded(
+                    child: ListView.builder(
+                      controller: _usersScrollController,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: provider.users.length,
+                      itemBuilder: (context, index) {
+                        final user = provider.users[index];
+                        return Column(
+                          children: [
+                            Card(
+                              elevation: 4,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: ExpansionTile(
+                                key: ValueKey('expansion_${index}_$_expandedIndex'),
+                                initiallyExpanded: _expandedIndex == index,
+                                shape: const RoundedRectangleBorder(
+                                  side: BorderSide.none,
                                 ),
-                                child: ExpansionTile(
-                                  key: ValueKey('expansion_${index}_$_expandedIndex'),
-                                  initiallyExpanded: _expandedIndex == index,
-                                  shape: const RoundedRectangleBorder(
-                                    side: BorderSide.none,
-                                  ),
-                                  collapsedShape: const RoundedRectangleBorder(
-                                    side: BorderSide.none,
-                                  ),
-                                  onExpansionChanged: (expanded) {
-                                    if (expanded) {
-                                      setState(() {
-                                        _expandedIndex = index;
-                                        userId = user.id;
-                                      });
-                                      provider.getUserReports(userId: user.id, refresh: true);
-                                    } else if (_expandedIndex == index) {
-                                      setState(() {
-                                        _expandedIndex = null;
-                                      });
-                                    }
-                                  },
-                                  leading: CircleAvatar(
-                                    radius: 20,
-                                    backgroundColor: Colors.grey[300],
-                                    backgroundImage: user.profileImageUrl != null ? NetworkImage(user.profileImageUrl!) : null,
-                                    onBackgroundImageError: user.profileImageUrl != null ? (_, _) {} : null,
-                                    child: user.profileImageUrl == null ? Icon(Icons.person, color: Colors.grey[600]) : null,
-                                  ),
-                                  title: Text(
-                                    user.name,
-                                    style: Theme.of(context).textTheme.titleMedium,
-                                  ),
-                                  subtitle: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Role: ${user.role}',
-                                        style: Theme.of(context).textTheme.bodySmall,
-                                      ),
-                                      Text(
-                                        'Email: ${user.email}',
-                                        style: Theme.of(context).textTheme.bodySmall,
-                                      ),
-                                    ],
-                                  ),
+                                collapsedShape: const RoundedRectangleBorder(
+                                  side: BorderSide.none,
+                                ),
+                                onExpansionChanged: (expanded) {
+                                  if (expanded) {
+                                    setState(() {
+                                      _expandedIndex = index;
+                                      userId = user.id;
+                                    });
+                                    provider.getUserReports(userId: user.id, refresh: true);
+                                  } else if (_expandedIndex == index) {
+                                    setState(() {
+                                      _expandedIndex = null;
+                                    });
+                                  }
+                                },
+                                leading: CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: Colors.grey[300],
+                                  backgroundImage: user.profileImageUrl != null ? NetworkImage(user.profileImageUrl!) : null,
+                                  onBackgroundImageError: user.profileImageUrl != null ? (_, _) {} : null,
+                                  child: user.profileImageUrl == null ? Icon(Icons.person, color: Colors.grey[600]) : null,
+                                ),
+                                title: Text(
+                                  user.name,
+                                  style: Theme.of(context).textTheme.titleMedium,
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    _buildUserReportsSection(context, provider, user.id),
+                                    Text(
+                                      'Role: ${user.role}',
+                                      style: Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                    Text(
+                                      'Email: ${user.email}',
+                                      style: Theme.of(context).textTheme.bodySmall,
+                                    ),
                                   ],
                                 ),
+                                children: [
+                                  _buildUserReportsSection(context, provider, user.id),
+                                ],
                               ),
-                              const SizedBox(height: 10),
-                            ],
-                          );
-                        },
-                      ),
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        );
+                      },
                     ),
+                  ),
                 ],
               ),
             );

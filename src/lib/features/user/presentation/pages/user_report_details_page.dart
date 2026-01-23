@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:src/core/common/enums/report_status.dart';
 import 'package:src/core/common/widgets/primary_button.dart';
 import 'package:src/core/utils/show_snackbar.dart';
-import 'package:src/features/user/domain/entities/user_report_entity.dart';
+import 'package:src/features/user/domain/entities/user_report.dart';
 import 'package:src/features/user/presentation/providers/user_profile_provider.dart';
 import 'package:src/features/user/presentation/widgets/status_chip.dart';
 

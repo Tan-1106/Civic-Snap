@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:src/core/common/enums/report_status.dart';
 import 'package:src/features/user/domain/usecases/get_users.dart';
-import 'package:src/features/user/domain/entities/user_entity.dart';
+import 'package:src/features/user/domain/entities/user.dart';
 import 'package:src/features/user/domain/usecases/get_user_reports.dart';
-import 'package:src/features/user/domain/entities/user_report_entity.dart';
+import 'package:src/features/user/domain/entities/user_report.dart';
 
 class UserManagementProvider extends ChangeNotifier {
   final GetUsersUseCase _getUsersUseCase;
@@ -15,42 +15,34 @@ class UserManagementProvider extends ChangeNotifier {
   ) : _getUsersUseCase = getUsersUseCase,
       _getUserReportsUseCase = getUserReportsUseCase;
 
-  // States
-  String? _errorMessage;
-
-  String? get errorMessage => _errorMessage;
-
-  bool _isLoading = false;
-
-  bool get isLoading => _isLoading;
-
-  static const int _pageSize = 10;
-
-  // Users list states
+  // State variables
   List<UserEntity> _users = [];
+  List<UserReportEntity> _userReports = [];
+
+  bool _hasMoreUsers = true;
+  String? _lastUserId;
+  bool _isLoadingMoreUsers = false;
+  String? _lastReportId;
+
+  String? _errorMessage;
+  bool _isLoading = false;
+  static const int _pageSize = 10;
 
   List<UserEntity> get users => _users;
 
-  bool _hasMoreUsers = true;
+  List<UserReportEntity> get userReports => _userReports;
 
   bool get hasMoreUsers => _hasMoreUsers;
 
-  String? _lastUserId;
+  String? get errorMessage => _errorMessage;
 
-  bool _isLoadingMoreUsers = false;
+  bool get isLoading => _isLoading;
 
   bool get isLoadingMoreUsers => _isLoadingMoreUsers;
-
-  // User reports list states
-  List<UserReportEntity> _userReports = [];
-
-  List<UserReportEntity> get userReports => _userReports;
 
   bool _hasMoreReports = true;
 
   bool get hasMoreReports => _hasMoreReports;
-
-  String? _lastReportId;
 
   bool _isLoadingMoreReports = false;
 

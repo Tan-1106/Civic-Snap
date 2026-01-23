@@ -2,16 +2,18 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:src/core/common/enums/report_status.dart';
-import 'package:src/features/user/data/models/user_model.dart';
-import 'package:src/features/user/data/models/user_report_model.dart';
+import 'package:src/features/user/data/models/user.dart';
+import 'package:src/features/user/data/models/user_report.dart';
 
 abstract interface class UserRemoteDataSource {
+  // Fetch users with optional keyword search and pagination
   Future<List<UserModel>> getUsers({
     required int limit,
     String? keyword,
     String? lastUserId,
   });
 
+  // Fetch user reports with optional status filter and pagination
   Future<List<UserReportModel>> getUserReports({
     required int limit,
     required String userId,
@@ -19,20 +21,24 @@ abstract interface class UserRemoteDataSource {
     String? lastReportId,
   });
 
+  // Get user profile by user ID
   Future<UserModel> getUserProfile(String userId);
 
-  Future<bool> uploadProfileImage({
+  // Upload profile image and update user document
+  Future<void> uploadProfileImage({
     required String userId,
     required File image,
   });
 
-  Future<bool> updateReportBasicInformation({
+  // Update basic information of a report
+  Future<void> updateReportBasicInformation({
     required String reportId,
     String? title,
     String? description,
   });
 
-  Future<bool> deleteReport({
+  // Delete a report by its ID
+  Future<void> deleteReport({
     required String reportId,
   });
 }
@@ -43,6 +49,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
   UserRemoteDataSourceImpl(this.firestore, this.storage);
 
+  // Fetch users with optional keyword search and pagination
   @override
   Future<List<UserModel>> getUsers({
     required int limit,
@@ -51,7 +58,6 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }) async {
     try {
       Query query = firestore.collection('users');
-
       if (keyword != null && keyword.isNotEmpty) {
         query = query.where(
           Filter.or(
@@ -61,7 +67,6 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
           ),
         );
       }
-
       query = query.limit(limit);
 
       if (lastUserId != null) {
@@ -76,6 +81,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     }
   }
 
+  // Fetch user reports with optional status filter and pagination
   @override
   Future<List<UserReportModel>> getUserReports({
     required int limit,
@@ -93,6 +99,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         final lastDoc = await firestore.collection('reports').doc(lastReportId).get();
         query = query.startAfterDocument(lastDoc);
       }
+
       final querySnapshot = await query.get();
       return querySnapshot.docs.map((doc) => UserReportModel.fromDocument(doc)).toList();
     } catch (e) {
@@ -100,6 +107,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     }
   }
 
+  // Get user profile by user ID
   @override
   Future<UserModel> getUserProfile(String userId) async {
     try {
@@ -113,8 +121,9 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     }
   }
 
+  // Upload profile image and update user document
   @override
-  Future<bool> uploadProfileImage({
+  Future<void> uploadProfileImage({
     required String userId,
     required File image,
   }) async {
@@ -137,15 +146,14 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       await firestore.collection('users').doc(userId).update({
         'profileImageUrl': downloadUrl,
       });
-
-      return true;
     } catch (e) {
       throw Exception(e.toString());
     }
   }
 
+  // Update basic information of a report
   @override
-  Future<bool> updateReportBasicInformation({
+  Future<void> updateReportBasicInformation({
     required String reportId,
     String? title,
     String? description,
@@ -155,14 +163,14 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         if (title != null) 'title': title,
         if (description != null) 'description': description,
       });
-      return true;
     } catch (e) {
       throw Exception(e.toString());
     }
   }
 
+  // Delete a report by its ID
   @override
-  Future<bool> deleteReport({
+  Future<void> deleteReport({
     required String reportId,
   }) async {
     try {
@@ -172,7 +180,6 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         await storageRef.delete();
       }
       await firestore.collection('reports').doc(reportId).delete();
-      return true;
     } catch (e) {
       throw Exception(e.toString());
     }

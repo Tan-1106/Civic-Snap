@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:src/core/common/enums/report_status.dart';
-import 'package:src/features/user/domain/entities/user_entity.dart';
+import 'package:src/features/user/domain/entities/user.dart';
 import 'package:src/features/user/domain/usecases/delete_report.dart';
 import 'package:src/features/user/domain/usecases/get_user_profile.dart';
 import 'package:src/features/user/domain/usecases/get_user_reports.dart';
-import 'package:src/features/user/domain/entities/user_report_entity.dart';
+import 'package:src/features/user/domain/entities/user_report.dart';
 import 'package:src/features/user/domain/usecases/update_profile_image.dart';
 import 'package:src/features/user/domain/usecases/update_report_basic_information.dart';
 

@@ -3,13 +3,13 @@ import 'package:src/core/error/failure.dart';
 import 'package:src/core/utils/usecase.dart';
 import 'package:src/features/user/domain/repositories/user_management_repository.dart';
 
-class UpdateReportBasicInformationUseCase implements UseCase<bool, UpdateReportBasicInformationParams> {
+class UpdateReportBasicInformationUseCase implements UseCase<void, UpdateReportBasicInformationParams> {
   final UserManagementRepository repository;
 
   UpdateReportBasicInformationUseCase(this.repository);
 
   @override
-  Future<Either<Failure, bool>> call(UpdateReportBasicInformationParams params) {
+  Future<Either<Failure, void>> call(UpdateReportBasicInformationParams params) {
     return repository.updateReportBasicInformation(
       reportId: params.reportId,
       title: params.title,

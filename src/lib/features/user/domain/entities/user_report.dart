@@ -43,6 +43,11 @@ class UserReportEntity {
       respondedAt: respondedAt,
     );
   }
+
+  @override
+  String toString() {
+    return 'UserReportEntity(id: $id, userId: $userId, title: $title, description: $description, imageUrl: $imageUrl, createdAt: $createdAt, status: $status, location: $location, response: $response, respondedAt: $respondedAt)';
+  }
 }
 
 class Location {
@@ -50,4 +55,9 @@ class Location {
   final double longitude;
 
   const Location({required this.latitude, required this.longitude});
+
+  @override
+  String toString() {
+    return 'Location(latitude: $latitude, longitude: $longitude)';
+  }
 }

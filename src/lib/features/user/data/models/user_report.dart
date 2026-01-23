@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:src/features/user/domain/entities/user_report_entity.dart';
+import 'package:src/features/user/domain/entities/user_report.dart';
 
 class UserReportModel {
   final String id;

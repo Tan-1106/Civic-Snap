@@ -12,4 +12,9 @@ class UserEntity {
     required this.role,
     this.profileImageUrl,
   });
+
+  @override
+  String toString() {
+    return 'UserEntity{id: $id, name: $name, email: $email, role: $role, profileImageUrl: $profileImageUrl}';
+  }
 }

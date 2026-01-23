@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:src/core/error/failure.dart';
 import 'package:src/core/utils/usecase.dart';
-import 'package:src/features/user/domain/entities/user_entity.dart';
+import 'package:src/features/user/domain/entities/user.dart';
 import 'package:src/features/user/domain/repositories/user_management_repository.dart';
 
 class GetUsersUseCase implements UseCase<List<UserEntity>, GetUsersParams> {

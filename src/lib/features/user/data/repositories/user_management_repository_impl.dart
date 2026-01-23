@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:fpdart/fpdart.dart';
 import 'package:src/core/error/failure.dart';
 import 'package:src/core/common/enums/report_status.dart';
-import 'package:src/features/user/domain/entities/user_entity.dart';
-import 'package:src/features/user/domain/entities/user_report_entity.dart';
+import 'package:src/features/user/domain/entities/user.dart';
+import 'package:src/features/user/domain/entities/user_report.dart';
 import 'package:src/features/user/domain/repositories/user_management_repository.dart';
 import 'package:src/features/user/data/datasources/user_remote_data_source.dart';
 
@@ -14,6 +14,7 @@ class UserManagementRepositoryImpl implements UserManagementRepository {
     this.remoteDataSource,
   );
 
+  // Fetch users with optional keyword search and pagination
   @override
   Future<Either<Failure, List<UserEntity>>> getUsers({
     required int limit,
@@ -32,6 +33,7 @@ class UserManagementRepositoryImpl implements UserManagementRepository {
     }
   }
 
+  // Fetch user reports with optional status filter and pagination
   @override
   Future<Either<Failure, List<UserReportEntity>>> getUserReports({
     required int limit,
@@ -52,6 +54,7 @@ class UserManagementRepositoryImpl implements UserManagementRepository {
     }
   }
 
+  // Get user profile by user ID
   @override
   Future<Either<Failure, UserEntity>> getUserProfile(String userId) async {
     try {
@@ -62,8 +65,9 @@ class UserManagementRepositoryImpl implements UserManagementRepository {
     }
   }
 
+  // Update report basic information
   @override
-  Future<Either<Failure, bool>> updateReportBasicInformation({
+  Future<Either<Failure, void>> updateReportBasicInformation({
     required String reportId,
     String? title,
     String? description,
@@ -80,8 +84,9 @@ class UserManagementRepositoryImpl implements UserManagementRepository {
     }
   }
 
+  // Delete a report by its ID
   @override
-  Future<Either<Failure, bool>> deleteReport({
+  Future<Either<Failure, void>> deleteReport({
     required String reportId,
   }) async {
     try {
@@ -92,8 +97,9 @@ class UserManagementRepositoryImpl implements UserManagementRepository {
     }
   }
 
+  // Update user profile image
   @override
-  Future<Either<Failure, bool>> updateProfileImage({
+  Future<Either<Failure, void>> updateProfileImage({
     required String userId,
     required File image,
   }) async {

@@ -2,7 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:src/core/error/failure.dart';
 import 'package:src/core/utils/usecase.dart';
 import 'package:src/core/common/enums/report_status.dart';
-import 'package:src/features/user/domain/entities/user_report_entity.dart';
+import 'package:src/features/user/domain/entities/user_report.dart';
 import 'package:src/features/user/domain/repositories/user_management_repository.dart';
 
 class GetUserReportsUseCase implements UseCase<List<UserReportEntity>, GetUserReportsParams> {
